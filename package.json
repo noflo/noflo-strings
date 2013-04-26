@@ -39,6 +39,9 @@
     , "Stringify": "./components/Stringify.coffee"
     , "ParseJson": "./components/ParseJson.coffee"
     }
+  , "graphs":
+    { "StringToArray": "./graphs/StringToArray.fbp"
+    }
   }
 , "scripts":
   { "pretest": "./node_modules/.bin/coffeelint -r components"

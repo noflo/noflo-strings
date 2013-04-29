@@ -1,6 +1,11 @@
 noflo = require "noflo"
+_s = require "underscore.string"
 
 class Replace extends noflo.Component
+
+  description: _s.clean "Given a fixed pattern and its replacement, replace all
+  occurrences in the incoming template."
+
   constructor: ->
     @pattern = null
     @replacement = ""

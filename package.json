@@ -38,12 +38,8 @@
     , "Replace": "./components/Replace.coffee"
     , "Template": "./components/Template.coffee"
     , "Splice": "./components/Splice.coffee"
-    , "Stringify": "./components/Stringify.coffee"
     , "ParseJson": "./components/ParseJson.coffee"
     , "MatchReplace": "./components/MatchReplace.coffee"
-    }
-  , "graphs":
-    { "StringToArray": "./graphs/StringToArray.fbp"
     }
   }
 , "scripts":

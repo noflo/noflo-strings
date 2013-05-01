@@ -20,14 +20,14 @@
   , "url": "git://github.com/kenhkan/noflo-strings"
   }
 , "dependencies":
-  { "noflo": "0.3.x"
+  { "noflo": "https://github.com/kenhkan/noflo/tarball/master"
   , "underscore": "1.4.x"
   , "underscore.string": "2.3.x"
   }
 , "devDependencies":
   { "coffeelint": "*"
   , "coffee-script": "1.6.x"
-  , "noflo-test": "0.0.x"
+  , "noflo-test": "https://github.com/kenhkan/noflo-test/tarball/master"
   }
 , "noflo":
   { "components":

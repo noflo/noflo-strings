@@ -1,7 +1,7 @@
-noflo = require("noflo")
-_ = require("underscore")
+noflo = require "noflo"
+_ = require "underscore"
 
-class TryParseJson extends noflo.Component
+class ParseJson extends noflo.Component
   constructor: ->
     @inPorts =
       in: new noflo.Port()
@@ -9,16 +9,13 @@ class TryParseJson extends noflo.Component
       out: new noflo.Port()
 
     @inPorts.in.on "begingroup", (group) =>
-      @outPorts.out.beginGroup(group)
+      @outPorts.out.beginGroup group
 
     @inPorts.in.on "data", (data) =>
-      if _.isObject(data)
-        for key, value of data
-          try
-            data[key] = JSON.parse(value)
-          catch e
-
-      @outPorts.out.send(data)
+      try
+        @outPorts.out.send JSON.parse data
+      catch e
+        @outPorts.out.send data
 
     @inPorts.in.on "endgroup", =>
       @outPorts.out.endGroup()
@@ -26,4 +23,4 @@ class TryParseJson extends noflo.Component
     @inPorts.in.on "disconnect", =>
       @outPorts.out.disconnect()
 
-exports.getComponent = -> new TryParseJson
+exports.getComponent = -> new ParseJson

@@ -29,7 +29,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/noflo/noflo-strings"
+    "url": "https://github.com/noflo/noflo-strings"
   },
   "dependencies": {
     "noflo": "https://github.com/kenhkan/noflo/tarball/release",

@@ -7,11 +7,21 @@
     "utilities"
   ],
   "author": "Kenneth Kan <kenhkan@gmail.com>",
+  "contributors": [
+    {
+      "name": "Henri Bergius",
+      "email": "henri.bergius@iki.fi"
+    },
+    {
+      "name": "Ryan Shaw",
+      "email": "ryanshaw@unc.edu"
+    }
+  ],
   "version": "0.1.0",
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/kenhkan/noflo-strings/blob/master/LICENSE.md"
+      "url": "https://github.com/noflo/noflo-strings/blob/master/LICENSE.md"
     }
   ],
   "engines": {
@@ -19,10 +29,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/kenhkan/noflo-strings"
+    "url": "git://github.com/noflo/noflo-strings"
   },
   "dependencies": {
-    "noflo": "https://github.com/kenhkan/noflo/tarball/master",
+    "noflo": "https://github.com/kenhkan/noflo/tarball/release",
     "underscore": "1.4.x",
     "underscore.string": "2.3.x"
   },
@@ -41,7 +51,13 @@
       "Template": "./components/Template.coffee",
       "Splice": "./components/Splice.coffee",
       "ParseJson": "./components/ParseJson.coffee",
-      "MatchReplace": "./components/MatchReplace.coffee"
+      "MatchReplace": "./components/MatchReplace.coffee",
+      "Base64Encode": "./components/Base64Encode.coffee",
+      "SplitStr": "./components/SplitStr.coffee",
+      "CompileString": "./components/CompileString.coffee",
+      "SubStr": "./components/SubStr.coffee",
+      "Replace": "./components/Replace.coffee",
+      "SendString": "./components/SendString.coffee"
     }
   },
   "scripts": {

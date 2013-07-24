@@ -1,4 +1,4 @@
-noflo = require '../../lib/NoFlo'
+noflo = require 'noflo'
 
 class SendString extends noflo.Component
   constructor: ->

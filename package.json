@@ -49,6 +49,7 @@
       "EscapeQuotes": "./components/EscapeQuotes.coffee",
       "Replace": "./components/Replace.coffee",
       "Template": "./components/Template.coffee",
+      "TemplateReplace": "./components/TemplateReplace.coffee",
       "Splice": "./components/Splice.coffee",
       "ParseJson": "./components/ParseJson.coffee",
       "MatchReplace": "./components/MatchReplace.coffee",

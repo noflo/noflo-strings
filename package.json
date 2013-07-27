@@ -57,8 +57,8 @@
       "SplitStr": "./components/SplitStr.coffee",
       "CompileString": "./components/CompileString.coffee",
       "SubStr": "./components/SubStr.coffee",
-      "Replace": "./components/Replace.coffee",
-      "SendString": "./components/SendString.coffee"
+      "SendString": "./components/SendString.coffee",
+      "StringTemplate": "./components/StringTemplate.coffee"
     }
   },
   "scripts": {

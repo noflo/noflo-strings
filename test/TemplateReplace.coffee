@@ -4,7 +4,7 @@ patterns =
   "&adjective": "happy"
   "&noun": "person"
 
-test.component("strings/Template").
+test.component("strings/TemplateReplace").
   discuss("pass in a template").
     send.data("template", "I am a &adjective &noun.").
   discuss("pass in an object containing patterns and replacements").

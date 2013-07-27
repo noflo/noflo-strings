@@ -11,6 +11,7 @@
     "component/underscore": "*"
   },
   "scripts": [
+    "components/Filter.coffee",
     "components/StringTemplate.coffee",
     "index.js"
   ],
@@ -19,6 +20,7 @@
   ],
   "noflo": {
     "components": {
+      "Filter": "components/Filter.coffee",
       "StringTemplate": "components/StringTemplate.coffee"
     }
   }

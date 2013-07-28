@@ -13,6 +13,7 @@
   "scripts": [
     "components/Filter.coffee",
     "components/StringTemplate.coffee",
+    "components/Replace.coffee",
     "index.js"
   ],
   "json": [
@@ -21,7 +22,8 @@
   "noflo": {
     "components": {
       "Filter": "components/Filter.coffee",
-      "StringTemplate": "components/StringTemplate.coffee"
+      "StringTemplate": "components/StringTemplate.coffee",
+      "Replace": "components/Replace.coffee"
     }
   }
 }

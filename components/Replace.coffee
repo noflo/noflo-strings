@@ -1,9 +1,8 @@
 noflo = require 'noflo'
-_s = require 'underscore.string'
 
 class Replace extends noflo.Component
 
-  description: _s.clean 'Given a fixed pattern and its replacement, replace all
+  description: 'Given a fixed pattern and its replacement, replace all
   occurrences in the incoming template.'
 
   constructor: ->
@@ -11,16 +10,16 @@ class Replace extends noflo.Component
     @replacement = ''
 
     @inPorts =
-      in: new noflo.Port()
-      pattern: new noflo.Port()
-      replacement: new noflo.Port()
+      in: new noflo.Port 'string'
+      pattern: new noflo.Port 'string'
+      replacement: new noflo.Port 'string'
     @outPorts =
-      out: new noflo.Port()
+      out: new noflo.Port 'string'
 
     @inPorts.pattern.on 'data', (data) =>
       @pattern = new RegExp(data, 'g')
     @inPorts.replacement.on 'data', (data) =>
-      @replacement = data
+      @replacement = data.replace '\\\\n', "\n"
 
     @inPorts.in.on 'begingroup', (group) =>
       @outPorts.out.beginGroup group

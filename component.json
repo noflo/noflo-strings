@@ -2,52 +2,38 @@
   "name": "noflo-strings",
   "description": "String Utilities for NoFlo",
   "version": "0.1.0",
+  "author": "Kenneth Kan <kenhkan@gmail.com>",
+  "repo": "noflo/noflo-strings",
   "keywords": [
     "noflo",
     "strings",
     "utilities"
   ],
-  "author": "Kenneth Kan <kenhkan@gmail.com>",
-  "contributors": [
-    {
-      "name": "Henri Bergius",
-      "email": "henri.bergius@iki.fi"
-    },
-    {
-      "name": "Ryan Shaw",
-      "email": "ryanshaw@unc.edu"
-    }
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/noflo/noflo-strings"
-  },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/noflo/noflo-strings/blob/master/LICENSE.md"
-    }
-  ],
   "dependencies": {
-    "noflo": "~0.3.3"
-    "underscore": "1.4.x",
-    "underscore.string": "2.3.x"
+    "noflo/noflo": "*"
   },
-  "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-contrib-coffee": "~0.6.6",
-    "grunt-coffeelint": "~0.0.6",
-    "grunt-cafe-mocha": "~0.1.2",
-    "chai": "~1.5.0",
-    "mocha": "~1.9.0",
-    "grunt-mocha-phantomjs": "~0.2.2",
-    "grunt-component-build": "~0.2.7",
-    "grunt-contrib-uglify": "~0.2.0",
-    "grunt-contrib-watch": "~0.3.1",
-    "component-json": "~0.1.4",
-    "grunt-combine": "~0.8.3",
-    "grunt-component": "~0.1.2"
-  },
+  "scripts": [
+    "./components/Filter.coffee",
+    "./components/Jsonify.coffee",
+    "./components/Quote.coffee",
+    "./components/EscapeQuotes.coffee",
+    "./components/Replace.coffee",
+    "./components/Template.coffee",
+    "./components/TemplateReplace.coffee",
+    "./components/Splice.coffee",
+    "./components/ParseJson.coffee",
+    "./components/MatchReplace.coffee",
+    "./components/Base64Encode.coffee",
+    "./components/SplitStr.coffee",
+    "./components/CompileString.coffee",
+    "./components/SubStr.coffee",
+    "./components/Replace.coffee",
+    "./components/SendString.coffee",
+    "index.js"
+  ],
+  "json": [
+    "component.json"
+  ],
   "noflo": {
     "components": {
       "Filter": "./components/Filter.coffee",
@@ -67,8 +53,5 @@
       "Replace": "./components/Replace.coffee",
       "SendString": "./components/SendString.coffee"
     }
-  },
-  "scripts": {
-    "test": "grunt test"
   }
 }

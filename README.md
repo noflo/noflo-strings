@@ -1,4 +1,4 @@
-String Utilities for NoFlo [![Build Status](https://secure.travis-ci.org/kenhkan/noflo-strings.png?branch=master)](https://travis-ci.org/kenhkan/noflo-strings)
+String Utilities for NoFlo [![Build Status](https://secure.travis-ci.org/noflo/noflo-strings.png?branch=master)](https://travis-ci.org/noflo/noflo-strings)
 ===============================
 
 This package provides utility components to manipulate strings in
@@ -6,3 +6,4 @@ This package provides utility components to manipulate strings in
 
 Feel free to contribute new components and graphs! I'll try to
 incorporate as soon as time allows.
+

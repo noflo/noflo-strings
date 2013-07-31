@@ -29,7 +29,7 @@
     }
   ],
   "dependencies": {
-    "noflo": "~0.3.3",
+    "noflo": "~0.4.0",
     "underscore": "1.4.x",
     "underscore.string": "2.3.x"
   },

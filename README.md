@@ -6,3 +6,4 @@ This package provides utility components to manipulate strings in
 
 Feel free to contribute new components and graphs! I'll try to
 incorporate as soon as time allows.
+

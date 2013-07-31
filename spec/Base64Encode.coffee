@@ -1,5 +1,5 @@
 noflo = require 'noflo'
-if typeof process is 'object' and process.title is 'node'
+unless noflo.isBrowser()
   chai = require 'chai' unless chai
   Base64Encode = require '../components/Base64Encode.coffee'
 else

@@ -12,6 +12,7 @@
   },
   "scripts": [
     "components/Filter.coffee",
+    "components/SendString.coffee",
     "components/StringTemplate.coffee",
     "components/Replace.coffee",
     "index.js"
@@ -22,6 +23,7 @@
   "noflo": {
     "components": {
       "Filter": "components/Filter.coffee",
+      "SendString": "components/SendString.coffee",
       "StringTemplate": "components/StringTemplate.coffee",
       "Replace": "components/Replace.coffee"
     }

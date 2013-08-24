@@ -1,7 +1,7 @@
 {
   "name": "noflo-strings",
   "description": "String Utilities for NoFlo",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "keywords": [
     "noflo",
     "strings",
@@ -66,7 +66,8 @@
       "CompileString": "./components/CompileString.coffee",
       "SubStr": "./components/SubStr.coffee",
       "SendString": "./components/SendString.coffee",
-      "StringTemplate": "./components/StringTemplate.coffee"
+      "StringTemplate": "./components/StringTemplate.coffee",
+      "ConvertEncoding": "./components/ConvertEncoding.coffee"
     }
   },
   "scripts": {

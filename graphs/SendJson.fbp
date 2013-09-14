@@ -1,0 +1,5 @@
+EXPORT=SENDSTRING.STRING:JSON
+EXPORT=SENDSTRING.IN:IN
+EXPORT=PARSEJSON.OUT:OUT
+
+SendString(strings/SendString) OUT -> IN ParseJson(strings/ParseJson)

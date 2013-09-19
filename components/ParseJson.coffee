@@ -1,5 +1,4 @@
 noflo = require "noflo"
-_ = require "underscore"
 
 class ParseJson extends noflo.Component
   constructor: ->

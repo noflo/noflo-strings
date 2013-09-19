@@ -16,6 +16,7 @@
     "components/StringTemplate.coffee",
     "components/Replace.coffee",
     "components/Jsonify.coffee",
+    "components/ParseJson.coffee",
     "index.js"
   ],
   "json": [
@@ -27,7 +28,8 @@
       "SendString": "components/SendString.coffee",
       "StringTemplate": "components/StringTemplate.coffee",
       "Replace": "components/Replace.coffee",
-      "Jsonify": "components/Jsonify.coffee"
+      "Jsonify": "components/Jsonify.coffee",
+      "ParseJson": "components/ParseJson.coffee"
     }
   }
 }

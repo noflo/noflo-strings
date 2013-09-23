@@ -11,6 +11,7 @@
     "component/underscore": "*"
   },
   "scripts": [
+    "components/CompileString.coffee",
     "components/Filter.coffee",
     "components/SendString.coffee",
     "components/StringTemplate.coffee",
@@ -24,6 +25,7 @@
   ],
   "noflo": {
     "components": {
+      "CompileString": "components/CompileString.coffee",
       "Filter": "components/Filter.coffee",
       "SendString": "components/SendString.coffee",
       "StringTemplate": "components/StringTemplate.coffee",

@@ -11,8 +11,10 @@
     "component/underscore": "*"
   },
   "scripts": [
+    "components/CompileString.coffee",
     "components/Filter.coffee",
     "components/SendString.coffee",
+    "components/SplitStr.coffee",
     "components/StringTemplate.coffee",
     "components/Replace.coffee",
     "components/Jsonify.coffee",
@@ -24,8 +26,10 @@
   ],
   "noflo": {
     "components": {
+      "CompileString": "components/CompileString.coffee",
       "Filter": "components/Filter.coffee",
       "SendString": "components/SendString.coffee",
+      "SplitStr": "components/SplitStr.coffee",
       "StringTemplate": "components/StringTemplate.coffee",
       "Replace": "components/Replace.coffee",
       "Jsonify": "components/Jsonify.coffee",

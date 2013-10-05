@@ -8,13 +8,18 @@ class TemplateReplace extends noflo.Component
 
   constructor: ->
     @template = null
+    @default = ''
 
     @inPorts =
       in: new noflo.Port()
       template: new noflo.Port()
       token: new noflo.Port()
+      # Default value for non-string input
+      default: new noflo.Port()
     @outPorts =
       out: new noflo.Port()
+
+    @inPorts.default.on "data", (@default) =>
 
     @inPorts.template.on "data", (template) =>
       @template = template if _.isString template
@@ -53,7 +58,8 @@ class TemplateReplace extends noflo.Component
       # Also accept a series of IPs
       token = @tokens[@tokenPos++]
       pattern = new RegExp token, 'g'
-      @output = @output.replace pattern, data
+      replacement = if _.isString data then data else @default
+      @output = @output.replace pattern, replacement
 
     @inPorts.in.on "endgroup", =>
       @outPorts.out.endGroup()

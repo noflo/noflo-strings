@@ -25,6 +25,7 @@
     "component.json"
   ],
   "noflo": {
+    "icon": "font",
     "components": {
       "CompileString": "components/CompileString.coffee",
       "Filter": "components/Filter.coffee",

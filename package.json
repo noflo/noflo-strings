@@ -50,6 +50,7 @@
     "grunt-component": "~0.1.2"
   },
   "noflo": {
+    "icon": "font",
     "components": {
       "Filter": "./components/Filter.coffee",
       "Jsonify": "./components/Jsonify.coffee",

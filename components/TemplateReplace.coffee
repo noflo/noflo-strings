@@ -8,32 +8,67 @@ class TemplateReplace extends noflo.Component
 
   constructor: ->
     @template = null
+    @default = ''
 
     @inPorts =
       in: new noflo.Port()
       template: new noflo.Port()
+      token: new noflo.Port()
+      # Default value for non-string input
+      default: new noflo.Port()
     @outPorts =
       out: new noflo.Port()
 
+    @inPorts.default.on "data", (@default) =>
+
     @inPorts.template.on "data", (template) =>
       @template = template if _.isString template
+
+    @inPorts.token.on "connect", =>
+      @tokens = []
+    @inPorts.token.on "data", (token) =>
+      @tokens.push token
+
+    @inPorts.in.on "connect", =>
+      @output = @template or ""
+      @tokenPos = 0
 
     @inPorts.in.on "begingroup", (group) =>
       @outPorts.out.beginGroup group
 
     @inPorts.in.on "data", (data) =>
-      string = @template or ""
+      return unless @output?
 
-      for pattern, replacement of data
-        pattern = new RegExp(pattern, "g")
-        string = string.replace pattern, replacement
+      # Accept a map of replacements
+      if _.isObject data
+        for pattern, replacement of data
+          pattern = new RegExp(pattern, "g")
+          @output = @output.replace pattern, replacement
 
-      @outPorts.out.send string
+        # Send immediately
+        @outPorts.out.send @output
+
+        # Clean up
+        delete @output
+        return
+
+      # There must be tokens
+      return unless @tokens?
+
+      # Also accept a series of IPs
+      token = @tokens[@tokenPos++]
+      pattern = new RegExp token, 'g'
+      replacement = if _.isString data then data else @default
+      @output = @output.replace pattern, replacement
 
     @inPorts.in.on "endgroup", =>
       @outPorts.out.endGroup()
 
     @inPorts.in.on "disconnect", =>
+      @outPorts.out.send @output if @output?
       @outPorts.out.disconnect()
+
+      # Clean up
+      delete @output
 
 exports.getComponent = -> new TemplateReplace

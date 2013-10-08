@@ -3,7 +3,7 @@ unless noflo.isBrowser()
   chai = require 'chai' unless chai
   SplitStr = require '../components/SplitStr.coffee'
 else
-  SplitStr = require 'noflo-adapters/components/SplitStr.js'
+  SplitStr = require 'noflo-strings/components/SplitStr.js'
 
 describe 'SplitStr component', ->
   c = null

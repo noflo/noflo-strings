@@ -3,7 +3,7 @@ unless noflo.isBrowser()
   chai = require 'chai' unless chai
   CompileString = require '../components/CompileString.coffee'
 else
-  CompileString = require 'noflo-adapters/components/CompileString.js'
+  CompileString = require 'noflo-strings/components/CompileString.js'
 
 describe 'CompileString component', ->
   c = null

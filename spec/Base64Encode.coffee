@@ -3,7 +3,7 @@ unless noflo.isBrowser()
   chai = require 'chai' unless chai
   Base64Encode = require '../components/Base64Encode.coffee'
 else
-  Base64Encode = require 'noflo-adapters/components/Base64Encode.js'
+  Base64Encode = require 'noflo-strings/components/Base64Encode.js'
 
 describe 'Base64Encode component', ->
   c = null

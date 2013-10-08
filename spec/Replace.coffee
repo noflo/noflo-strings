@@ -3,7 +3,7 @@ unless noflo.isBrowser()
   chai = require 'chai' unless chai
   Replace = require '../components/Replace.coffee'
 else
-  Replace = require 'noflo-adapters/components/Replace.js'
+  Replace = require 'noflo-strings/components/Replace.js'
 
 describe 'Replace component', ->
   c = null

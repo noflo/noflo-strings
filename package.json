@@ -68,7 +68,8 @@
       "SubStr": "./components/SubStr.coffee",
       "SendString": "./components/SendString.coffee",
       "StringTemplate": "./components/StringTemplate.coffee",
-      "ConvertEncoding": "./components/ConvertEncoding.coffee"
+      "ConvertEncoding": "./components/ConvertEncoding.coffee",
+      "Sift3Distance": "./components/Sift3Distance.coffee"
     },
     "graphs": {
       "SendJson": "./graphs/SendJson.fbp"

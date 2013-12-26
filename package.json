@@ -16,6 +16,10 @@
     {
       "name": "Ryan Shaw",
       "email": "ryanshaw@unc.edu"
+    },
+    {
+      "name": "Paul Mölders",
+      "email": "paulmoelders@gmail.com"
     }
   ],
   "repository": {
@@ -68,7 +72,8 @@
       "SubStr": "./components/SubStr.coffee",
       "SendString": "./components/SendString.coffee",
       "StringTemplate": "./components/StringTemplate.coffee",
-      "ConvertEncoding": "./components/ConvertEncoding.coffee"
+      "ConvertEncoding": "./components/ConvertEncoding.coffee",
+      "LowerCaseString": "./components/LowerCaseString.coffee"
     },
     "graphs": {
       "SendJson": "./graphs/SendJson.fbp"

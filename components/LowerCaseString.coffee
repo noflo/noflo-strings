@@ -6,7 +6,7 @@ class LowerCaseString extends noflo.Component
 
   constructor: ->
     @inPorts =
-      in: new noflo.Port
+      in: new noflo.Port "string"
     @outPorts =
       out: new noflo.Port
 

@@ -10,13 +10,13 @@ class Jsonify extends noflo.Component
     @raw = false
 
     @inPorts =
-      in: new noflo.Port()
-      raw: new noflo.Port()
+      in: new noflo.Port 'object'
+      raw: new noflo.Port 'boolean'
     @outPorts =
-      out: new noflo.Port()
+      out: new noflo.Port 'string'
 
     @inPorts.raw.on 'data', (raw) =>
-      @raw = raw is 'true'
+      @raw = String(raw) is 'true'
 
     @inPorts.in.on 'begingroup', (group) =>
       @outPorts.out.beginGroup group

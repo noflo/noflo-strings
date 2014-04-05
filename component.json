@@ -19,6 +19,7 @@
     "components/Replace.coffee",
     "components/Jsonify.coffee",
     "components/ParseFloat.coffee",
+    "components/ParseInt.coffee",
     "components/ParseJson.coffee",
     "index.js"
   ],
@@ -36,6 +37,7 @@
       "Replace": "components/Replace.coffee",
       "Jsonify": "components/Jsonify.coffee",
       "ParseFloat": "components/ParseFloat.coffee",
+      "ParseInt": "components/ParseInt.coffee",
       "ParseJson": "components/ParseJson.coffee"
     }
   }

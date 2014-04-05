@@ -65,6 +65,7 @@
       "TemplateReplace": "./components/TemplateReplace.coffee",
       "Splice": "./components/Splice.coffee",
       "ParseFloat": "./components/ParseFloat.coffee",
+      "ParseInt": "./components/ParseInt.coffee",
       "ParseJson": "./components/ParseJson.coffee",
       "MatchReplace": "./components/MatchReplace.coffee",
       "Base64Encode": "./components/Base64Encode.coffee",

@@ -20,6 +20,10 @@
     {
       "name": "Paul Mölders",
       "email": "paulmoelders@gmail.com"
+    },
+    {
+      "name": "Sudhir Tiwari",
+      "email": "sudhir.aries@gmail.com"
     }
   ],
   "repository": {
@@ -73,7 +77,8 @@
       "SendString": "./components/SendString.coffee",
       "StringTemplate": "./components/StringTemplate.coffee",
       "ConvertEncoding": "./components/ConvertEncoding.coffee",
-      "LowerCaseString": "./components/LowerCaseString.coffee"
+      "LowerCaseString": "./components/LowerCaseString.coffee",
+      "SendObject": "./components/SendObject.coffee",
     },
     "graphs": {
       "SendJson": "./graphs/SendJson.fbp"

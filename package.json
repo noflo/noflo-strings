@@ -78,7 +78,7 @@
       "StringTemplate": "./components/StringTemplate.coffee",
       "ConvertEncoding": "./components/ConvertEncoding.coffee",
       "LowerCaseString": "./components/LowerCaseString.coffee",
-      "SendObject": "./components/SendObject.coffee",
+      "SendObject": "./components/SendObject.coffee"
     },
     "graphs": {
       "SendJson": "./graphs/SendJson.fbp"

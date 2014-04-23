@@ -1,5 +1,7 @@
 noflo = require 'noflo'
 
+# @runtime noflo-nodejs
+
 class ConvertEncoding extends noflo.Component
   description: 'Convert a string or a buffer from one encoding to another.
     Default from UTF-8 to Base64'

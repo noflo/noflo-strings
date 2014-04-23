@@ -4,8 +4,7 @@
   "author": "Henri Bergius <henri.bergius@iki.fi>",
   "repo": "noflo/noflo-strings",
   "version": "0.0.1",
-  "keywords": [
-  ],
+  "keywords": [],
   "dependencies": {
     "noflo/noflo": "*",
     "component/underscore": "*"
@@ -21,7 +20,15 @@
     "components/ParseFloat.coffee",
     "components/ParseInt.coffee",
     "components/ParseJson.coffee",
-    "index.js"
+    "index.js",
+    "components/Base64Encode.coffee",
+    "components/EscapeQuotes.coffee",
+    "components/LowerCaseString.coffee",
+    "components/MatchReplace.coffee",
+    "components/Quote.coffee",
+    "components/Splice.coffee",
+    "components/SubStr.coffee",
+    "components/TemplateReplace.coffee"
   ],
   "json": [
     "component.json"
@@ -29,16 +36,27 @@
   "noflo": {
     "icon": "font",
     "components": {
+      "Base64Encode": "components/Base64Encode.coffee",
       "CompileString": "components/CompileString.coffee",
+      "EscapeQuotes": "components/EscapeQuotes.coffee",
       "Filter": "components/Filter.coffee",
-      "SendString": "components/SendString.coffee",
-      "SplitStr": "components/SplitStr.coffee",
-      "StringTemplate": "components/StringTemplate.coffee",
-      "Replace": "components/Replace.coffee",
       "Jsonify": "components/Jsonify.coffee",
+      "LowerCaseString": "components/LowerCaseString.coffee",
+      "MatchReplace": "components/MatchReplace.coffee",
       "ParseFloat": "components/ParseFloat.coffee",
       "ParseInt": "components/ParseInt.coffee",
-      "ParseJson": "components/ParseJson.coffee"
+      "ParseJson": "components/ParseJson.coffee",
+      "Quote": "components/Quote.coffee",
+      "Replace": "components/Replace.coffee",
+      "SendString": "components/SendString.coffee",
+      "Splice": "components/Splice.coffee",
+      "SplitStr": "components/SplitStr.coffee",
+      "StringTemplate": "components/StringTemplate.coffee",
+      "SubStr": "components/SubStr.coffee",
+      "TemplateReplace": "components/TemplateReplace.coffee"
+    },
+    "graphs": {
+      "SendJson": "graphs/SendJson.fbp"
     }
   }
 }

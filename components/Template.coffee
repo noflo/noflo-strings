@@ -1,5 +1,7 @@
 noflo = require 'noflo'
 
+# @runtime noflo-nodejs
+
 class Template extends noflo.Component
   description: 'This component receives a templating engine name,
     a string containing the template, and variables for the template.

@@ -34,7 +34,8 @@
   ],
   "dependencies": {
     "noflo": "~0.5.0",
-    "underscore": "1.4.x"
+    "underscore": "1.4.x",
+    "btoa": "^1.1.1"
   },
   "devDependencies": {
     "grunt-exec": "~0.4.2",
@@ -51,34 +52,35 @@
     "grunt-contrib-watch": "~0.3.1",
     "component-json": "~0.1.4",
     "grunt-combine": "~0.8.3",
-    "grunt-component": "~0.1.2"
+    "grunt-component": "~0.1.2",
+    "grunt-noflo-manifest": "^0.1.2"
   },
   "noflo": {
     "icon": "font",
     "components": {
-      "Filter": "./components/Filter.coffee",
-      "Jsonify": "./components/Jsonify.coffee",
-      "Quote": "./components/Quote.coffee",
-      "EscapeQuotes": "./components/EscapeQuotes.coffee",
-      "Replace": "./components/Replace.coffee",
-      "Template": "./components/Template.coffee",
-      "TemplateReplace": "./components/TemplateReplace.coffee",
-      "Splice": "./components/Splice.coffee",
-      "ParseFloat": "./components/ParseFloat.coffee",
-      "ParseInt": "./components/ParseInt.coffee",
-      "ParseJson": "./components/ParseJson.coffee",
-      "MatchReplace": "./components/MatchReplace.coffee",
-      "Base64Encode": "./components/Base64Encode.coffee",
-      "SplitStr": "./components/SplitStr.coffee",
-      "CompileString": "./components/CompileString.coffee",
-      "SubStr": "./components/SubStr.coffee",
-      "SendString": "./components/SendString.coffee",
-      "StringTemplate": "./components/StringTemplate.coffee",
-      "ConvertEncoding": "./components/ConvertEncoding.coffee",
-      "LowerCaseString": "./components/LowerCaseString.coffee"
+      "Base64Encode": "components/Base64Encode.coffee",
+      "CompileString": "components/CompileString.coffee",
+      "ConvertEncoding": "components/ConvertEncoding.coffee",
+      "EscapeQuotes": "components/EscapeQuotes.coffee",
+      "Filter": "components/Filter.coffee",
+      "Jsonify": "components/Jsonify.coffee",
+      "LowerCaseString": "components/LowerCaseString.coffee",
+      "MatchReplace": "components/MatchReplace.coffee",
+      "ParseFloat": "components/ParseFloat.coffee",
+      "ParseInt": "components/ParseInt.coffee",
+      "ParseJson": "components/ParseJson.coffee",
+      "Quote": "components/Quote.coffee",
+      "Replace": "components/Replace.coffee",
+      "SendString": "components/SendString.coffee",
+      "Splice": "components/Splice.coffee",
+      "SplitStr": "components/SplitStr.coffee",
+      "StringTemplate": "components/StringTemplate.coffee",
+      "SubStr": "components/SubStr.coffee",
+      "Template": "components/Template.coffee",
+      "TemplateReplace": "components/TemplateReplace.coffee"
     },
     "graphs": {
-      "SendJson": "./graphs/SendJson.fbp"
+      "SendJson": "graphs/SendJson.fbp"
     }
   },
   "scripts": {

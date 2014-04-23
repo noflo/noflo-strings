@@ -1,5 +1,10 @@
 noflo = require 'noflo'
 
+unless noflo.isBrowser()
+  btoa = require 'btoa'
+else
+  btoa = window.btoa
+
 class Base64Encode extends noflo.Component
   description: 'This component receives strings or Buffers and sends them out
   Base64-encoded'
@@ -24,8 +29,8 @@ class Base64Encode extends noflo.Component
     @inPorts.in.on 'data', (data) =>
       # In case of Buffers we can just encode them
       # immediately
-      if data instanceof Buffer
-        @encodedData += data.toString 'base64'
+      if not noflo.isBrowser() and data instanceof Buffer
+        @encodedData += btoa data
         return
       # In case of strings we just append to the
       # existing and encode later
@@ -45,6 +50,6 @@ class Base64Encode extends noflo.Component
     return @encodedData unless @encodedData is ''
     # In case of strings we need to encode the data
     # first
-    return new Buffer(@data).toString 'base64'
+    return btoa @data
 
 exports.getComponent = -> new Base64Encode

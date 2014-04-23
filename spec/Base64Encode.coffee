@@ -53,6 +53,7 @@ describe 'Base64Encode component', ->
       ins.disconnect()
 
     it 'test encoding a buffer', (done) ->
+      return done() if noflo.isBrowser()
       packets = ['SGVsbG8sIFdvcmxkIQ==']
 
       out.on 'data', (data) ->

@@ -53,7 +53,8 @@
     "component-json": "~0.1.4",
     "grunt-combine": "~0.8.3",
     "grunt-component": "~0.1.2",
-    "grunt-noflo-manifest": "^0.1.2"
+    "grunt-noflo-manifest": "^0.1.4",
+    "component-fbp": "^0.1.0"
   },
   "noflo": {
     "icon": "font",

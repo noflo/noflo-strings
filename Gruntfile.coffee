@@ -37,6 +37,8 @@ module.exports = ->
           # Enable Component plugins
           json = require 'component-json'
           builder.use json()
+          fbp = require 'component-fbp'
+          builder.use fbp()
 
     # Fix broken Component aliases, as mentioned in
     # https://github.com/anthonyshort/component-coffee/issues/3

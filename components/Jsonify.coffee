@@ -8,15 +8,19 @@ class Jsonify extends noflo.Component
 
   constructor: ->
     @raw = false
+    @pretty = false
 
     @inPorts =
       in: new noflo.Port 'object'
       raw: new noflo.Port 'boolean'
+      pretty: new noflo.Port 'boolean'
     @outPorts =
       out: new noflo.Port 'string'
 
     @inPorts.raw.on 'data', (raw) =>
       @raw = String(raw) is 'true'
+    @inPorts.pretty.on 'data', (pretty) =>
+      @pretty = String(pretty) is 'true'
 
     @inPorts.in.on 'begingroup', (group) =>
       @outPorts.out.beginGroup group
@@ -24,6 +28,10 @@ class Jsonify extends noflo.Component
     @inPorts.in.on 'data', (data) =>
       if @raw and _.isString data
         @outPorts.out.send data
+        return
+
+      if @pretty
+        @outPorts.out.send JSON.stringify data, null, 4
         return
 
       @outPorts.out.send JSON.stringify data

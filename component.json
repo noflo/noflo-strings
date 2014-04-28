@@ -9,6 +9,9 @@
     "noflo/noflo": "*",
     "component/underscore": "*"
   },
+  "remotes": [
+    "https://raw.githubusercontent.com"
+  ],
   "scripts": [
     "components/CompileString.coffee",
     "components/Filter.coffee",

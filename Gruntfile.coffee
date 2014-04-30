@@ -21,25 +21,6 @@ module.exports = ->
         dest: 'spec'
         ext: '.js'
 
-    # Browser version building
-    component:
-      install:
-        options:
-          action: 'install'
-    component_build:
-      'strings':
-        output: './browser/'
-        config: './component.json'
-        scripts: true
-        styles: false
-        plugins: ['coffee']
-        configure: (builder) ->
-          # Enable Component plugins
-          json = require 'component-json'
-          builder.use json()
-          fbp = require 'component-fbp'
-          builder.use fbp()
-
     # Fix broken Component aliases, as mentioned in
     # https://github.com/anthonyshort/component-coffee/issues/3
     combine:
@@ -87,15 +68,18 @@ module.exports = ->
 
     # noflo-test
     exec:
+      install:
+        command: 'node ./node_modules/component/bin/component install'
+      build:
+        command: 'node ./node_modules/component/bin/component build -u component-json,component-fbp,component-coffee -o browser -n noflo-ui -c'
       test:
         command: './node_modules/.bin/noflo-test --spec test/*.coffee'
 
   # Grunt plugins used for building
   @loadNpmTasks 'grunt-noflo-manifest'
   @loadNpmTasks 'grunt-contrib-coffee'
-  @loadNpmTasks 'grunt-component'
-  @loadNpmTasks 'grunt-component-build'
   @loadNpmTasks 'grunt-combine'
+  @loadNpmTasks 'grunt-exec'
   @loadNpmTasks 'grunt-contrib-uglify'
 
   # Grunt plugins used for testing
@@ -103,15 +87,14 @@ module.exports = ->
   @loadNpmTasks 'grunt-cafe-mocha'
   @loadNpmTasks 'grunt-mocha-phantomjs'
   @loadNpmTasks 'grunt-coffeelint'
-  @loadNpmTasks 'grunt-exec'
 
   # Our local tasks
   @registerTask 'build', 'Build NoFlo for the chosen target platform', (target = 'all') =>
     @task.run 'coffee'
     @task.run 'noflo_manifest'
     if target is 'all' or target is 'browser'
-      @task.run 'component'
-      @task.run 'component_build'
+      @task.run 'exec:install'
+      @task.run 'exec:build'
       @task.run 'combine'
       @task.run 'uglify'
 
@@ -123,8 +106,8 @@ module.exports = ->
     if target is 'all' or target is 'nodejs'
       @task.run 'cafemocha'
     if target is 'all' or target is 'browser'
-      @task.run 'component'
-      @task.run 'component_build'
+      @task.run 'exec:install'
+      @task.run 'exec:build'
       @task.run 'combine'
       @task.run 'mocha_phantomjs'
 

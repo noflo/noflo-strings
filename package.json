@@ -49,12 +49,8 @@
     "grunt-mocha-phantomjs": "~0.2.2",
     "grunt-contrib-uglify": "~0.2.0",
     "grunt-contrib-watch": "~0.3.1",
-    "component-json": "~0.1.4",
-    "grunt-combine": "~0.8.3",
     "grunt-noflo-manifest": "^0.1.4",
-    "component-fbp": "^0.1.0",
-    "component": "^0.19.9",
-    "component-coffee": "^0.1.4"
+    "grunt-noflo-browser": "^0.1.1"
   },
   "noflo": {
     "icon": "font",

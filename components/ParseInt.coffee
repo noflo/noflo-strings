@@ -2,11 +2,17 @@ noflo = require "noflo"
 
 class ParseInt extends noflo.Component
   constructor: ->
-    @inPorts =
-      in: new noflo.Port 'string'
-      base: new noflo.Port 'number'
-    @outPorts =
-      out: new noflo.Port 'number'
+    @inPorts = new noflo.InPorts
+      in:
+        datatype: 'string'
+        description: 'Strings to parse as an integer representation'
+      base:
+        datatype: 'number'
+        description: 'Base used to parse the string representation'
+    @outPorts = new noflo.OutPorts
+      out:
+        datatype: 'number'
+        description: 'Parsed number'
 
     @base = 10
 

@@ -10,12 +10,20 @@ class Jsonify extends noflo.Component
     @raw = false
     @pretty = false
 
-    @inPorts =
-      in: new noflo.Port 'object'
-      raw: new noflo.Port 'boolean'
-      pretty: new noflo.Port 'boolean'
-    @outPorts =
-      out: new noflo.Port 'string'
+    @inPorts = new noflo.InPorts
+      in:
+        datatype: 'object'
+        description: 'Object to convert into a JSON representation'
+      raw:
+        datatype: 'boolean'
+        description: 'Whether to send strings as is'
+      pretty:
+        datatype: 'boolean'
+        description: 'Make JSON output pretty'
+    @outPorts = new noflo.OutPorts
+      out:
+        datatype: 'string'
+        description: 'JSON representation of the input object'
 
     @inPorts.raw.on 'data', (raw) =>
       @raw = String(raw) is 'true'

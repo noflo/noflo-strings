@@ -7,12 +7,20 @@ class Filter extends noflo.Component
   constructor: ->
     @regex = null
 
-    @inPorts =
-      in: new noflo.Port 'string'
-      pattern: new noflo.Port 'string'
-    @outPorts =
-      out: new noflo.Port 'string'
-      missed: new noflo.Port 'string'
+    @inPorts = new noflo.InPorts
+      in:
+        datatype: 'string'
+        description: 'String to filter'
+      pattern:
+        datatype: 'string'
+        description: 'String representation of a regexp used as filter'
+    @outPorts = new noflo.OutPorts
+      out:
+        datatype: 'string'
+        description: 'String passing the filter'
+      missed:
+        datatype: 'string'
+        description: 'String failing the filter'
 
     @inPorts.pattern.on "data", (data) =>
       @regex = new RegExp(data)

@@ -4,11 +4,16 @@ class ParseJson extends noflo.Component
   constructor: ->
     @try = false
 
-    @inPorts =
-      in: new noflo.Port()
-      try: new noflo.Port()
-    @outPorts =
-      out: new noflo.Port()
+    @inPorts = new noflo.InPorts
+      in:
+        datatype: 'string'
+        description: 'JSON description to parse'
+      try:
+        datatype: 'all'
+    @outPorts = new noflo.OutPorts
+      out:
+        datatype: 'object'
+        description: 'Parsed object'
 
     @inPorts.try.on "data", (data) =>
       @try = true if data is "true"

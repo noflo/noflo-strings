@@ -5,12 +5,19 @@ class SubStr extends noflo.Component
     @index = 0
     @limit = undefined
 
-    @inPorts =
-      index: new noflo.Port
-      limit: new noflo.Port
-      in: new noflo.Port
-    @outPorts =
-      out: new noflo.Port
+    @inPorts = new noflo.InPorts
+      index:
+        datatype: 'integer'
+        description: 'Index of the sub part '
+      limit:
+        datatype: 'integer'
+        description: 'Limit of the sub part'
+      in:
+        datatype: 'string'
+        description: 'String to extract a sub part from'
+    @outPorts = new noflo.OutPorts
+      out:
+        datatype: 'string'
 
     @inPorts.index.on 'data', (data) =>
       @index = data

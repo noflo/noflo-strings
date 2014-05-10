@@ -4,11 +4,16 @@ _ = require 'underscore'
 class StringTemplate extends noflo.Component
   constructor: ->
     @template = null
-    @inPorts =
-      template: new noflo.Port 'string'
-      in: new noflo.Port 'object'
-    @outPorts =
-      out: new noflo.Port 'string'
+    @inPorts = new noflo.InPorts
+      template:
+        datatype: 'string'
+        description: 'Templating string'
+      in:
+        datatype: 'object'
+        description: 'Object containing key/value set used to run the template'
+    @outPorts = new noflo.OutPorts
+      out:
+        datatype: 'string'
 
     @inPorts.template.on 'data', (data) =>
       @template = _.template data

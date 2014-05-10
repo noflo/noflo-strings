@@ -6,10 +6,14 @@ class EscapeQuotes extends noflo.Component
   description: "Escape all quotes in a string"
 
   constructor: ->
-    @inPorts =
-      in: new noflo.Port
-    @outPorts =
-      out: new noflo.Port
+    @inPorts = new noflo.InPorts
+      in:
+        datatype: 'string'
+        description: 'String to escape quotes from'
+    @outPorts = new noflo.OutPorts
+      out:
+        datatype: 'string'
+        description: 'Escaped string'
 
     @inPorts.in.on "begingroup", (group) =>
       @outPorts.out.beginGroup(group)

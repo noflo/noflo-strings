@@ -6,10 +6,14 @@ class Quote extends noflo.Component
   description: "quote the incoming string IPs"
 
   constructor: ->
-    @inPorts =
-      in: new noflo.Port
-    @outPorts =
-      out: new noflo.Port
+    @inPorts = new noflo.InPorts
+      in:
+        datatype: 'string'
+        description: 'String to put quote around'
+    @outPorts = new noflo.OutPorts
+      out:
+        datatype: 'string'
+        description: 'Quoted input string'
 
     @inPorts.in.on "begingroup", (group) =>
       @outPorts.out.beginGroup(group)

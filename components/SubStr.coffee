@@ -7,10 +7,10 @@ class SubStr extends noflo.Component
 
     @inPorts = new noflo.InPorts
       index:
-        datatype: 'integer'
+        datatype: 'int'
         description: 'Index of the sub part '
       limit:
-        datatype: 'integer'
+        datatype: 'int'
         description: 'Limit of the sub part'
       in:
         datatype: 'string'

@@ -6,11 +6,14 @@ class SendString extends noflo.Component
       string: null
       group: []
     @groups = []
-    @inPorts =
-      string: new noflo.Port 'string'
-      in: new noflo.Port 'bang'
-    @outPorts =
-      out: new noflo.Port 'string'
+    @inPorts = new noflo.InPorts
+      string:
+        datatype: 'string'
+      in:
+        datatype: 'bang'
+    @outPorts = new noflo.OutPorts
+      out:
+        datatype: 'string'
 
     @inPorts.string.on 'data', (data) =>
       @data.string = data

@@ -15,10 +15,14 @@ class Base64Encode extends noflo.Component
 
     # This component has only two ports: an input port
     # and an output port.
-    @inPorts =
-      in: new noflo.Port
-    @outPorts =
-      out: new noflo.Port
+    @inPorts = new noflo.InPorts
+      in:
+        datatype: 'all'
+        description: 'Buffer or string to encode'
+    @outPorts = new noflo.OutPorts
+      out:
+        datatype: 'string'
+        description: 'Encoded input'
 
     # Initialize an empty string for receiving data
     # when we get a connection

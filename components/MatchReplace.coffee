@@ -6,11 +6,16 @@ class MatchReplace extends noflo.Component
     @matches = {}
     @matchKeys = []
 
-    @inPorts =
-      in: new noflo.Port()
-      match: new noflo.Port()
-    @outPorts =
-      out: new noflo.Port()
+    @inPorts = new noflo.InPorts
+      in:
+        datatype: 'all'
+      match:
+        datatype: 'object'
+        description: 'Dictionnary object with key matching
+         the input object and value being the replacement item'
+    @outPorts = new noflo.OutPorts
+      out:
+        datatype: 'all'
 
     @inPorts.match.on "connect", =>
       @matches = {}

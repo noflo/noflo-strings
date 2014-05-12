@@ -9,12 +9,19 @@ class Replace extends noflo.Component
     @pattern = null
     @replacement = ''
 
-    @inPorts =
-      in: new noflo.Port 'string'
-      pattern: new noflo.Port 'string'
-      replacement: new noflo.Port 'string'
-    @outPorts =
-      out: new noflo.Port 'string'
+    @inPorts = new noflo.InPorts
+      in:
+        datatype: 'string'
+        description: 'String to replace pattern in'
+      pattern:
+        datatype: 'string'
+        description: 'Pattern to replace'
+      replacement:
+        datatype: 'string'
+        description: 'Replacement for the pattern'
+    @outPorts = new noflo.OutPorts
+      out:
+        datatype: 'string'
 
     @inPorts.pattern.on 'data', (data) =>
       @pattern = new RegExp(data, 'g')

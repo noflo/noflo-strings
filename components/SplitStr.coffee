@@ -10,11 +10,19 @@ class SplitStr extends noflo.Component
     @strings = []
     @groups = []
 
-    @inPorts =
-      in: new noflo.Port()
-      delimiter: new noflo.Port()
-    @outPorts =
-      out: new noflo.Port()
+    @inPorts = new noflo.InPorts
+      in:
+        datatype: 'string'
+        description: 'String to split'
+      delimiter:
+        datatype: 'string'
+        description: 'Delimiter used to split'
+    @outPorts = new noflo.OutPorts
+      out:
+        datatype: 'string'
+        description: 'Split off elements from the input
+         string (one element per IP)'
+
     @inPorts.delimiter.on 'data', (data) =>
       first = data.substr 0, 1
       last = data.substr data.length - 1, 1

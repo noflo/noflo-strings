@@ -11,12 +11,17 @@ class SpliceString extends noflo.Component
     @assoc = ":"
     @delim = ","
 
-    @inPorts =
-      in: new noflo.ArrayPort
-      assoc: new noflo.Port
-      delim: new noflo.Port
-    @outPorts =
-      out: new noflo.Port
+    @inPorts = new noflo.InPorts
+      in:
+        datatype: 'array'
+        description: 'Array to interlace (2 consecutive IPs)'
+      assoc:
+        datatype: 'string'
+      delim:
+        datatype: 'string'
+    @outPorts = new noflo.OutPorts
+      out:
+        datatype: 'string'
 
     @inPorts.assoc.on "data", (@assoc) =>
     @inPorts.delim.on "data", (@delim) =>

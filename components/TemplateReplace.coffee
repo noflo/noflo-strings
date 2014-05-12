@@ -10,14 +10,19 @@ class TemplateReplace extends noflo.Component
     @template = null
     @default = ''
 
-    @inPorts =
-      in: new noflo.Port()
-      template: new noflo.Port()
-      token: new noflo.Port()
+    @inPorts = new noflo.InPorts
+      in:
+        datatype: 'object'
+      template:
+        datatype: 'string'
+      token:
+        datatype: 'string'
       # Default value for non-string input
-      default: new noflo.Port()
-    @outPorts =
-      out: new noflo.Port()
+      default:
+        datatype: 'string'
+    @outPorts = new noflo.OutPorts
+      out:
+        datatype: 'string'
 
     @inPorts.default.on "data", (@default) =>
 

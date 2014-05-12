@@ -14,12 +14,20 @@ class ConvertEncoding extends noflo.Component
     # The work-in-progress string
     @wip = ''
 
-    @inPorts =
-      in: new noflo.Port 'all'
-      from: new noflo.Port 'string'
-      to: new noflo.Port 'string'
-    @outPorts =
-      out: new noflo.Port 'string'
+    @inPorts = new noflo.InPorts
+      in:
+        datatype: 'all'
+        description: 'Buffer or string to be converted'
+      from:
+        datatype: 'string'
+        description: 'Input encoding'
+      to:
+        datatype: 'string'
+        description: 'Output encoding'
+    @outPorts = new noflo.OutPorts
+      out:
+        datatype: 'string'
+        description: 'Converted string'
 
     @inPorts.from.on 'data', (@from) =>
     @inPorts.to.on 'data', (@to) =>

@@ -13,13 +13,19 @@ class Template extends noflo.Component
     @variables = null
     @template = null
 
-    @inPorts =
-      engine: new noflo.Port()
-      options: new noflo.Port()
-      template: new noflo.Port()
-
-    @outPorts =
-      out: new noflo.Port()
+    @inPorts = new noflo.InPorts
+      engine:
+        datatype: 'string'
+        description: 'Templating engine name'
+      options:
+        datatype: 'object'
+        description: 'Templating options'
+      template:
+        datatype: 'string'
+        description: 'Template'
+    @outPorts = new noflo.OutPorts
+      out:
+        datatype: 'string'
 
     @inPorts.engine.on 'data', (data) =>
       @engine = data

@@ -7,12 +7,21 @@ class CompileString extends noflo.Component
     @data = []
     @onGroupEnd = true
 
-    @inPorts =
-      delimiter: new noflo.Port
-      in: new noflo.ArrayPort
-      ongroup: new noflo.Port
-    @outPorts =
-      out: new noflo.Port
+    @inPorts = new noflo.InPorts
+      delimiter:
+        datatype: 'string'
+        description: 'String used to concatenate input strings'
+      in:
+        dataype: 'string'
+        description: 'Strings to concatenate (one per IP)'
+      ongroup:
+        datatype: 'all'
+        description: 'true to release the concatened strings
+         when a endgroup event happens'
+    @outPorts = new noflo.OutPorts
+      out:
+        datatype: 'string'
+        description: 'Concatenation of input strings'
 
     @inPorts.delimiter.on 'data', (data) =>
       @delimiter = data

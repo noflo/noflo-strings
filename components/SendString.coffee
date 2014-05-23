@@ -22,6 +22,7 @@ class SendString extends noflo.Component
       @groups.push group
 
     @inPorts.in.on 'data', (data) =>
+      return if @data.string is null
       @data.group = @groups.slice 0
       @sendString @data
 

@@ -15,7 +15,7 @@ class CompileString extends noflo.Component
         dataype: 'string'
         description: 'Strings to concatenate (one per IP)'
       ongroup:
-        datatype: 'all'
+        datatype: 'boolean'
         description: 'true to release the concatened strings
          when a endgroup event happens'
     @outPorts = new noflo.OutPorts
@@ -43,12 +43,6 @@ class CompileString extends noflo.Component
       @outPorts.out.disconnect()
 
     @inPorts.ongroup.on "data", (data) =>
-      if typeof data is 'string'
-        if data.toLowerCase() is 'false'
-          @onGroupEnd = false
-          return
-        @onGroupEnd = true
-        return
-      @onGroupEnd = data
+      @onGroupEnd = String(data) is 'true'
 
 exports.getComponent = -> new CompileString

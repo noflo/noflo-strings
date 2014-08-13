@@ -29,6 +29,7 @@
     "components/Splice.coffee",
     "components/SubStr.coffee",
     "components/TemplateReplace.coffee",
+    "components/ToString.coffee",
     "graphs/SendJson.fbp"
   ],
   "json": [
@@ -54,7 +55,8 @@
       "SplitStr": "components/SplitStr.coffee",
       "StringTemplate": "components/StringTemplate.coffee",
       "SubStr": "components/SubStr.coffee",
-      "TemplateReplace": "components/TemplateReplace.coffee"
+      "TemplateReplace": "components/TemplateReplace.coffee",
+      "ToString": "components/ToString.coffee"
     },
     "graphs": {
       "SendJson": "graphs/SendJson.fbp"

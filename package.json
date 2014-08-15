@@ -74,7 +74,8 @@
       "StringTemplate": "components/StringTemplate.coffee",
       "SubStr": "components/SubStr.coffee",
       "Template": "components/Template.coffee",
-      "TemplateReplace": "components/TemplateReplace.coffee"
+      "TemplateReplace": "components/TemplateReplace.coffee",
+      "ToString": "components/ToString.coffee"
     },
     "graphs": {
       "SendJson": "graphs/SendJson.fbp"

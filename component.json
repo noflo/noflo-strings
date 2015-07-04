@@ -3,7 +3,7 @@
   "description": "String Utilities for NoFlo",
   "author": "Henri Bergius <henri.bergius@iki.fi>",
   "repo": "noflo/noflo-strings",
-  "version": "0.0.1",
+  "version": "0.1.10",
   "keywords": [],
   "dependencies": {
     "noflo/noflo": "*",

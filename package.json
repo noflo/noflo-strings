@@ -49,7 +49,7 @@
     "grunt-mocha-test": "^0.12.7",
     "grunt-noflo-browser": "^0.1.1",
     "grunt-noflo-manifest": "^0.1.4",
-    "mocha": "~1.21.0",
+    "mocha": "~2.3.4",
     "noflo-test": "~0.0.4"
   },
   "noflo": {

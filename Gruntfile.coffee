@@ -37,7 +37,7 @@ module.exports = ->
 
     # Automated recompilation and testing when developing
     watch:
-      files: ['spec/*.coffee', 'components/*.coffee']
+      files: ['spec/*.coffee', 'test/*.coffee', 'components/*.coffee']
       tasks: ['test']
 
     # BDD tests on Node.js

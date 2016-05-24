@@ -13,6 +13,7 @@ describe 'MatchReplace component', ->
   ins = null
   out = null
   before (done) ->
+    @timeout 4000
     loader = new noflo.ComponentLoader baseDir
     loader.load 'strings/MatchReplace', (err, instance) ->
       return done err if err

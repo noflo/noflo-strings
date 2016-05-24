@@ -28,7 +28,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "noflo": "~0.5.13",
+    "noflo": "~0.7.1",
     "underscore": "~1.8.3",
     "btoa": "~1.1.2"
   },

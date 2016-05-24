@@ -14,20 +14,28 @@
     <div id="mocha"></div>
     <div id="fixtures"></div>
     <script src="../browser/strings.js"></script>
-    <script src="http://chaijs.com/chai.js"></script>
+    <script src="../node_modules/chai/chai.js"></script>
     <script src="../node_modules/mocha/mocha.js"></script>
-    <script>mocha.setup('bdd');</script>
+    <script>
+      if (window.initMochaPhantomJS) {
+        window.initMochaPhantomJS();
+      }
+      mocha.setup('bdd');
+    </script>
     <script src="./Base64Encode.js"></script>
     <script src="./CompileString.js"></script>
+    <script src="./Filter.js"></script>
+    <script src="./MatchReplace.js"></script>
+    <script src="./ParseFloat.js"></script>
+    <script src="./ParseInt.js"></script>
     <script src="./Replace.js"></script>
+    <script src="./Sift3Distance.js"></script>
+    <script src="./Splice.js"></script>
     <script src="./SplitStr.js"></script>
+    <script src="./StringTemplate.js"></script>
+    <script src="./TemplateReplace.js"></script>
     <script>
-      if (window.mochaPhantomJS) {
-        mochaPhantomJS.run();
-      } else {
-        mocha.checkLeaks();
-        mocha.run();
-      }
+      mocha.run();
     </script>
   </body>
 </html>

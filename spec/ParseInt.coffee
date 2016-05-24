@@ -37,7 +37,7 @@ describe 'ParseInt component', ->
         done()
       ins.send '42px'
   describe 'with "0.12345"', ->
-    it 'should return 0.12345', (done) ->
+    it 'should return 0', (done) ->
       out.on 'data', (data) ->
         chai.expect(data).to.equal 0
         done()

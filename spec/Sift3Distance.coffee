@@ -3,7 +3,7 @@ noflo = require 'noflo'
 unless noflo.isBrowser()
   chai = require 'chai'
   path = require 'path'
-  baseDir = path.resolve __dirname, '..'
+  baseDir = path.resolve __dirname, '../'
 else
   baseDir = 'noflo-strings'
 
@@ -13,17 +13,22 @@ describe 'Sift3Distance component', ->
   string2 = null
   out = null
   before (done) ->
+    @timeout 4000
     loader = new noflo.ComponentLoader baseDir
     loader.load 'strings/Sift3Distance', (err, instance) ->
       return done err if err
       c = instance
       string1 = noflo.internalSocket.createSocket()
       string2 = noflo.internalSocket.createSocket()
-      out = noflo.internalSocket.createSocket()
       c.inPorts.string1.attach string1
       c.inPorts.string2.attach string2
-      c.outPorts.out.attach out
       done()
+  beforeEach ->
+    out = noflo.internalSocket.createSocket()
+    c.outPorts.out.attach out
+  afterEach ->
+    c.outPorts.out.detach out
+    out = null
 
   describe 'with blank string 1', ->
     it 'should return distance 0', (done) ->

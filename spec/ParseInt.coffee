@@ -3,7 +3,7 @@ noflo = require 'noflo'
 unless noflo.isBrowser()
   chai = require 'chai'
   path = require 'path'
-  baseDir = path.resolve __dirname, '..'
+  baseDir = path.resolve __dirname, '../'
 else
   baseDir = 'noflo-strings'
 
@@ -13,17 +13,22 @@ describe 'ParseInt component', ->
   ins = null
   out = null
   before (done) ->
+    @timeout 4000
     loader = new noflo.ComponentLoader baseDir
     loader.load 'strings/ParseInt', (err, instance) ->
       return done err if err
       c = instance
       base = noflo.internalSocket.createSocket()
       ins = noflo.internalSocket.createSocket()
-      out = noflo.internalSocket.createSocket()
       c.inPorts.base.attach base
       c.inPorts.in.attach ins
-      c.outPorts.out.attach out
       done()
+  beforeEach ->
+    out = noflo.internalSocket.createSocket()
+    c.outPorts.out.attach out
+  afterEach ->
+    c.outPorts.out.detach out
+    out = null
 
   describe 'with 42px', ->
     it 'should return 42', (done) ->

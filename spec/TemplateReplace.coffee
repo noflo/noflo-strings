@@ -3,7 +3,7 @@ noflo = require 'noflo'
 unless noflo.isBrowser()
   chai = require 'chai'
   path = require 'path'
-  baseDir = path.resolve __dirname, '..'
+  baseDir = path.resolve __dirname, '../'
 else
   baseDir = 'noflo-strings'
 
@@ -14,6 +14,7 @@ describe 'TemplateReplace component', ->
   ins = null
   out = null
   before (done) ->
+    @timeout 4000
     loader = new noflo.ComponentLoader baseDir
     loader.load 'strings/TemplateReplace', (err, instance) ->
       return done err if err
@@ -21,12 +22,16 @@ describe 'TemplateReplace component', ->
       template = noflo.internalSocket.createSocket()
       token = noflo.internalSocket.createSocket()
       ins = noflo.internalSocket.createSocket()
-      out = noflo.internalSocket.createSocket()
       c.inPorts.template.attach template
       c.inPorts.token.attach token
       c.inPorts.in.attach ins
-      c.outPorts.out.attach out
       done()
+  beforeEach ->
+    out = noflo.internalSocket.createSocket()
+    c.outPorts.out.attach out
+  afterEach ->
+    c.outPorts.out.detach out
+    out = null
 
   describe 'with an object containing patterns and replacements', ->
     it 'should return a templated string', (done) ->

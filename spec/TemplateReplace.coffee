@@ -42,6 +42,7 @@ describe 'TemplateReplace component', ->
       ins.send
         '&adjective': 'happy'
         '&noun': 'person'
+      ins.disconnect()
 
   describe 'with a series of tokens', ->
     it 'should return a templated string', (done) ->
@@ -53,3 +54,4 @@ describe 'TemplateReplace component', ->
       token.send '&noun'
       ins.send 'happy'
       ins.send 'person'
+      ins.disconnect()

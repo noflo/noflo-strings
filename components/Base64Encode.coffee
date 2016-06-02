@@ -5,55 +5,70 @@ unless noflo.isBrowser()
 else
   btoa = window.btoa
 
-class Base64Encode extends noflo.Component
-  description: 'This component receives strings or Buffers and sends them out
+exports.getComponent = ->
+  c = new noflo.Component
+  c.description = 'This component receives strings or Buffers and sends them out
   Base64-encoded'
 
-  constructor: ->
-    @data = null
-    @encodedData = ''
+  c.inPorts.add 'in',
+    datatype: 'all'
+    description: 'Buffer or string to encode'
+  c.outPorts.add 'out',
+    datatype: 'string'
+    description: 'Encoded input'
 
-    # This component has only two ports: an input port
-    # and an output port.
-    @inPorts = new noflo.InPorts
-      in:
-        datatype: 'all'
-        description: 'Buffer or string to encode'
-    @outPorts = new noflo.OutPorts
-      out:
-        datatype: 'string'
-        description: 'Encoded input'
+  brackets = {}
+  scope = {}
+  rawData = {}
+  encodedData = {}
 
-    # Initialize an empty string for receiving data
-    # when we get a connection
-    @inPorts.in.on 'connect', =>
-      @data = ''
+  c.forwardBrackets = {}
+  c.process (input, output) ->
+    # Force auto-ordering to be off for this one
+    c.autoOrdering = false
 
-    # Process each incoming IP
-    @inPorts.in.on 'data', (data) =>
-      # In case of Buffers we can just encode them
-      # immediately
+    return unless input.has 'in'
+    data = input.get 'in'
+    if data.type is 'openBracket'
+      brackets[data.scope] = [] unless brackets[data.scope]
+      brackets[data.scope].push data.data
+    if data.type is 'closeBracket'
+      brackets[data.scope].pop() if brackets[data.scope]
+    if data.type is 'data'
+      scope[data.scope] = if brackets[data.scope] then brackets[data.scope].slice(0) else []
       if not noflo.isBrowser() and data instanceof Buffer
-        @encodedData += btoa data
+        encodedData[data.scope] = '' unless encodedData[data.scope]
+        encodedData[data.scope] += btoa data.data
+      else
+        rawData[data.scope] = '' unless rawData[data.scope]
+        rawData[data.scope] += data.data
+
+    if data.type in ['data', 'closeBracket'] and brackets[data.scope].length is 0
+
+      for bracket in scope[data.scope]
+        output.sendIP 'out', new noflo.IP 'openBracket', bracket
+
+      if encodedData[data.scope]?.length
+        output.send
+          out: encodedData[data.scope]
+        delete encodedData[data.scope]
         return
-      # In case of strings we just append to the
-      # existing and encode later
-      @data += data
+      else
+        rawData[data.scope] = '' unless rawData[data.scope]
+        output.send
+          out: btoa rawData[data.scope]
+        delete rawData[data.scope]
 
-    # On disconnection we send out all the encoded
-    # data
-    @inPorts.in.on 'disconnect', =>
-      @outPorts.out.send @encodeData()
-      @outPorts.out.disconnect()
-      @data = null
-      @encodedData = ''
+      for bracket in scope[data.scope]
+        output.sendIP 'out', new noflo.IP 'closeBracket', bracket
 
-  encodeData: ->
-    # In case of Buffers we already have encoded data
-    # available
-    return @encodedData unless @encodedData is ''
-    # In case of strings we need to encode the data
-    # first
-    return btoa @data
+      output.done()
+    return
 
-exports.getComponent = -> new Base64Encode
+  c.shutdown = ->
+    brackets = {}
+    scope = {}
+    rawData = {}
+    encodedData = {}
+
+  c

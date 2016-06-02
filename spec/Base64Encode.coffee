@@ -10,12 +10,18 @@ describe 'Base64Encode component', ->
   ins = null
   out = null
 
-  beforeEach ->
+  before ->
     c = Base64Encode.getComponent()
     ins = noflo.internalSocket.createSocket()
-    out = noflo.internalSocket.createSocket()
     c.inPorts.in.attach ins
+
+  beforeEach ->
+    out = noflo.internalSocket.createSocket()
     c.outPorts.out.attach out
+
+  afterEach ->
+    c.outPorts.out.detach out
+    out = null
 
   describe 'when instantiated', ->
     it 'should have an input port', ->

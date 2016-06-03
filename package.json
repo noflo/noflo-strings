@@ -1,7 +1,7 @@
 {
   "name": "noflo-strings",
   "description": "String Utilities for NoFlo",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "keywords": [
     "noflo",
     "strings",
@@ -28,7 +28,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "noflo": "~0.5.22",
+    "noflo": "^0.5.22",
     "underscore": "~1.8.3",
     "btoa": "~1.1.2"
   },

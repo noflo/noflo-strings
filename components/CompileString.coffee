@@ -1,48 +1,61 @@
 noflo = require 'noflo'
 
-class CompileString extends noflo.Component
+exports.getComponent = ->
+  c = new noflo.Component
+  c.description = 'Concatenate received strings with the given delimiter at the end of a stream'
 
-  constructor: ->
-    @delimiter = "\n"
-    @data = []
-    @onGroupEnd = true
+  c.inPorts.add 'delimiter',
+    datatype: 'string'
+    description: 'String used to concatenate input strings'
+    default: "\n"
+    control: true
+  c.inPorts.add 'in',
+    datatype: 'string'
+    description: 'Strings to concatenate (one per IP)'
+  c.outPorts.add 'out',
+    datatype: 'string'
+    description: 'Concatenation of input strings'
 
-    @inPorts = new noflo.InPorts
-      delimiter:
-        datatype: 'string'
-        description: 'String used to concatenate input strings'
-      in:
-        dataype: 'string'
-        description: 'Strings to concatenate (one per IP)'
-      ongroup:
-        datatype: 'boolean'
-        description: 'true to release the concatened strings
-         when a endgroup event happens'
-    @outPorts = new noflo.OutPorts
-      out:
-        datatype: 'string'
-        description: 'Concatenation of input strings'
+  c.forwardBrackets = {}
 
-    @inPorts.delimiter.on 'data', (data) =>
-      @delimiter = data
+  brackets = {}
+  strings = {}
+  c.process (input, output) ->
+    # Force auto-ordering to be off for this one
+    c.autoOrdering = false
 
-    @inPorts.in.on 'begingroup', (group) =>
-      @outPorts.out.beginGroup group
+    return unless input.has 'in'
+    data = input.get 'in'
+    if data.type is 'openBracket'
+      brackets[data.scope] = [] unless brackets[data.scope]
+      brackets[data.scope].push data.data
+    if data.type is 'closeBracket'
+      return unless brackets[data.scope]
+      bracketId = brackets[data.scope].join ':'
+      if strings[data.scope]?[bracketId]
+        delimiter = if input.has('delimiter') then input.getData('delimiter') else "\n"
 
-    @inPorts.in.on 'data', (data) =>
-      @data.push data
+        for bracket in brackets[data.scope]
+          output.sendIP 'out', new noflo.IP 'openBracket', bracket
 
-    @inPorts.in.on 'endgroup', =>
-      @outPorts.out.send @data.join @delimiter if @data.length and @onGroupEnd
-      @outPorts.out.endGroup()
-      @data = []
+        output.send
+          out: strings[data.scope][bracketId].join delimiter
 
-    @inPorts.in.on 'disconnect', =>
-      @outPorts.out.send @data.join @delimiter if @data.length
-      @data = []
-      @outPorts.out.disconnect()
+        for bracket in brackets[data.scope]
+          output.sendIP 'out', new noflo.IP 'closeBracket', bracket
 
-    @inPorts.ongroup.on "data", (data) =>
-      @onGroupEnd = String(data) is 'true'
+        delete strings[data.scope][bracketId]
+        output.done()
+      brackets[data.scope].pop() if brackets[data.scope]
+    if data.type is 'data'
+      return unless brackets[data.scope]
+      bracketId = brackets[data.scope].join ':'
+      strings[data.scope] = {} unless strings[data.scope]
+      strings[data.scope][bracketId] = [] unless strings[data.scope][bracketId]
+      strings[data.scope][bracketId].push data.data
 
-exports.getComponent = -> new CompileString
+  c.shutdown = ->
+    strings = {}
+    brackets = {}
+
+  c

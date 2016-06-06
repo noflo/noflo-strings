@@ -1,31 +1,29 @@
 noflo = require 'noflo'
 
-class SubStr extends noflo.Component
-  constructor: ->
-    @index = 0
-    @limit = undefined
+exports.getComponent = ->
+  c = new noflo.Component
+  c.description = 'Produce a substring from a string'
 
-    @inPorts = new noflo.InPorts
-      index:
-        datatype: 'int'
-        description: 'Index of the sub part '
-      limit:
-        datatype: 'int'
-        description: 'Limit of the sub part'
-      in:
-        datatype: 'string'
-        description: 'String to extract a sub part from'
-    @outPorts = new noflo.OutPorts
-      out:
-        datatype: 'string'
+  c.inPorts.add 'index',
+    datatype: 'int'
+    description: 'Index of the sub part '
+    control: true
+  c.inPorts.add 'limit',
+    datatype: 'int'
+    description: 'Limit of the sub part'
+    control: true
+  c.inPorts.add 'in',
+    datatype: 'string'
+    description: 'String to extract a sub part from'
+  c.outPorts.add 'out',
+    datatype: 'string'
 
-    @inPorts.index.on 'data', (data) =>
-      @index = data
-    @inPorts.limit.on 'data', (data) =>
-      @limit = data
-    @inPorts.in.on 'data', (data) =>
-      @outPorts.out.send data.substr @index, @limit
-    @inPorts.in.on 'disconnect', =>
-      @outPorts.out.disconnect()
+  c.process (input, output) ->
+    return unless input.has 'in'
+    data = input.get 'in'
+    return unless data.type is 'data'
+    index = if input.has('index') then input.getData('index') else 0
+    limit = if input.has('limit') then input.getData('limit') else undefined
 
-exports.getComponent = -> new SubStr
+    output.sendDone
+      out: data.data.substr index, limit

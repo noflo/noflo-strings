@@ -68,7 +68,6 @@
       "SplitStr": "components/SplitStr.coffee",
       "StringTemplate": "components/StringTemplate.coffee",
       "SubStr": "components/SubStr.coffee",
-      "Template": "components/Template.coffee",
       "TemplateReplace": "components/TemplateReplace.coffee",
       "ToString": "components/ToString.coffee"
     },

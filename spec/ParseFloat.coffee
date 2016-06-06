@@ -33,15 +33,18 @@ describe 'ParseFloat component', ->
         chai.expect(data).to.equal 42
         done()
       ins.send '42px'
+      ins.disconnect()
   describe 'with "0.12345"', ->
     it 'should return 0.12345', (done) ->
       out.on 'data', (data) ->
         chai.expect(data).to.equal 0.12345
         done()
       ins.send '0.12345'
+      ins.disconnect()
   describe 'with qgpowqpo', ->
     it 'should return NaN', (done) ->
       out.on 'data', (data) ->
         chai.expect(data).to.eql NaN
         done()
       ins.send 'qgpowqpo'
+      ins.disconnect()

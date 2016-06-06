@@ -2,47 +2,42 @@ noflo = require 'noflo'
 
 # @runtime noflo-nodejs
 
-class ConvertEncoding extends noflo.Component
-  description: 'Convert a string or a buffer from one encoding to another.
+exports.getComponent = ->
+  c = new noflo.Component
+  c.description = 'Convert a string or a buffer from one encoding to another.
     Default from UTF-8 to Base64'
 
-  constructor: ->
-    # From this encoding...
-    @from = 'utf8'
-    # To this encoding
-    @to = 'base64'
-    # The work-in-progress string
-    @wip = ''
+  c.inPorts.add 'in',
+    datatype: 'all'
+    description: 'Buffer or string to be converted'
+  c.inPorts.add 'from',
+    datatype: 'string'
+    description: 'Input encoding'
+    default: 'utf8'
+    control: true
+  c.inPorts.add 'to',
+    datatype: 'string'
+    description: 'Output encoding'
+    default: 'base64'
+    control: true
+  c.outPorts.add 'out',
+    datatype: 'string'
+    description: 'Converted string'
 
-    @inPorts = new noflo.InPorts
-      in:
-        datatype: 'all'
-        description: 'Buffer or string to be converted'
-      from:
-        datatype: 'string'
-        description: 'Input encoding'
-      to:
-        datatype: 'string'
-        description: 'Output encoding'
-    @outPorts = new noflo.OutPorts
-      out:
-        datatype: 'string'
-        description: 'Converted string'
+  c.process (input, output) ->
+    return unless input.has 'in'
 
-    @inPorts.from.on 'data', (@from) =>
-    @inPorts.to.on 'data', (@to) =>
+    from = if input.has('from') then input.getData('from') else 'utf8'
+    to = if input.has('to') then input.getData('to') else 'base64'
 
-    @inPorts.in.on 'connect', =>
-      @wip = ''
+    data = input.get 'in'
+    return unless data.type is 'data'
 
-    @inPorts.in.on 'data', (data) =>
-      if data instanceof Buffer
-        @wip += data.toString @from
-      else if typeof data is 'string'
-        @wip += new Buffer(data, @from).toString()
+    result = ''
+    if data.data instanceof Buffer
+      result += data.data.toString from
+    else if typeof data.data is 'string'
+      result += new Buffer(data.data, from).toString()
 
-    @inPorts.in.on 'disconnect', =>
-      @outPorts.out.send new Buffer(@wip).toString @to
-      @outPorts.out.disconnect()
-
-exports.getComponent = -> new ConvertEncoding
+    output.sendDone
+      out: new Buffer(result).toString to

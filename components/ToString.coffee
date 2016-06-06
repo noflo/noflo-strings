@@ -10,7 +10,8 @@ exports.getComponent = () ->
   c.outPorts.add 'out',
     datatype: 'string'
 
-  noflo.helpers.MapComponent c, (data, groups, out) ->
-    out.send data.toString()
-
-  c
+  c.process (input, output) ->
+    data = input.get 'in'
+    return unless data.type is 'data'
+    output.sendDone
+      out: data.data.toString()

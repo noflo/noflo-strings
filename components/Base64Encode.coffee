@@ -23,10 +23,9 @@ exports.getComponent = ->
   encodedData = {}
 
   c.forwardBrackets = {}
-  c.process (input, output) ->
-    # Force auto-ordering to be off for this one
-    c.autoOrdering = false
+  c.autoOrdering = false
 
+  c.process (input, output) ->
     return unless input.has 'in'
     data = input.get 'in'
     if data.type is 'openBracket'

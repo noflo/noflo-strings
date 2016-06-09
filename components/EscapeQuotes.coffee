@@ -12,8 +12,6 @@ exports.getComponent = ->
     description: 'Escaped string'
 
   c.process (input, output) ->
-    data = input.get 'in'
-    return unless data.type is 'data'
-
+    data = input.getData 'in'
     output.sendDone
-      out: data.data.replace /\"/g, "\\\""
+      out: data.replace /\"/g, "\\\""

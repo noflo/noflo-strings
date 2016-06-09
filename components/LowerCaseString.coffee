@@ -12,7 +12,6 @@ exports.getComponent = ->
     description: 'All-lowercase string'
 
   c.process (input, output) ->
-    return unless input.has 'in'
     data = input.getData 'in'
     return unless data
 

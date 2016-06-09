@@ -16,7 +16,6 @@ exports.getComponent = ->
 
   c.process (input, output) ->
     return unless input.has 'string', 'in'
-    data = input.get 'in'
-    return unless data.type is 'data'
+    data = input.getData 'in'
     output.sendDone
       out: input.getData 'string'

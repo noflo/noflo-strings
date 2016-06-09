@@ -18,7 +18,6 @@ exports.getComponent = ->
   c.process (input, output) ->
     return unless input.has 'in'
     data = input.getData 'in'
-    return unless data
 
     base = if input.has('base') then input.getData('base') else 10
 

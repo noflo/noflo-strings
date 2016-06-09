@@ -12,7 +12,6 @@ exports.getComponent = ->
     description: 'Escaped string'
 
   c.process (input, output) ->
-    return unless input.has 'in'
     data = input.get 'in'
     return unless data.type is 'data'
 

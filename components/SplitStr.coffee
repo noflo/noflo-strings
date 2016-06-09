@@ -13,6 +13,7 @@ exports.getComponent = ->
     datatype: 'string'
     description: 'Delimiter used to split'
     control: true
+    default: "\n"
   c.outPorts.add 'out',
     datatype: 'string'
     description: 'Split off elements from the input

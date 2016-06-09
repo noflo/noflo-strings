@@ -19,6 +19,9 @@ exports.getComponent = ->
     datatype: 'string'
     description: 'String failing the filter'
 
+  c.forwardBrackets =
+    in: ['out', 'missed']
+
   c.process (input, output) ->
     return unless input.has 'in', 'pattern'
     data = input.getData 'in'

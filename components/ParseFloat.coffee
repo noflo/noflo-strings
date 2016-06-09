@@ -12,6 +12,5 @@ exports.getComponent = ->
 
   c.process (input, output) ->
     data = input.getData 'in'
-    return unless data
     output.sendDone
       out: parseFloat data

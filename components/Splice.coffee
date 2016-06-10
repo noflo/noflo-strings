@@ -37,6 +37,6 @@ exports.getComponent = ->
     delim = if input.has('delim') then input.getData('delim') else ','
 
     paired = _.zip strings[0], strings[1]
-    strings = _.map(paired, ((pair) => pair.join(assoc)))
+    strings = _.map(paired, ((pair) -> pair.join(assoc)))
     output.sendDone
       out: strings.join delim

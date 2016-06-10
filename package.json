@@ -28,12 +28,13 @@
   },
   "license": "MIT",
   "dependencies": {
-    "noflo": "0.x >= 0.5",
+    "noflo": "0.x >= 0.7",
     "underscore": "~1.8.3",
     "btoa": "~1.1.2"
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "coffee-script": "^1.10.0",
     "grunt": "^0.4.5",
     "grunt-coffeelint": "^0.0.16",
     "grunt-contrib-coffee": "^1.0.0",
@@ -67,7 +68,6 @@
       "SplitStr": "components/SplitStr.coffee",
       "StringTemplate": "components/StringTemplate.coffee",
       "SubStr": "components/SubStr.coffee",
-      "Template": "components/Template.coffee",
       "TemplateReplace": "components/TemplateReplace.coffee",
       "ToString": "components/ToString.coffee"
     },

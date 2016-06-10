@@ -1,43 +1,38 @@
 noflo = require 'noflo'
 
-class Replace extends noflo.Component
-
-  description: 'Given a fixed pattern and its replacement, replace all
+exports.getComponent = ->
+  c = new noflo.Component
+  c.description = 'Given a fixed pattern and its replacement, replace all
   occurrences in the incoming template.'
 
-  constructor: ->
-    @pattern = null
-    @replacement = ''
+  c.inPorts.add 'in',
+    datatype: 'string'
+    description: 'String to replace pattern in'
+  c.inPorts.add 'pattern',
+    datatype: 'string'
+    description: 'Pattern to replace'
+    control: true
+  c.inPorts.add 'replacement',
+    datatype: 'string'
+    description: 'Replacement for the pattern'
+    control: true
+  c.outPorts.add 'out',
+    datatype: 'string'
 
-    @inPorts = new noflo.InPorts
-      in:
-        datatype: 'string'
-        description: 'String to replace pattern in'
-      pattern:
-        datatype: 'string'
-        description: 'Pattern to replace'
-      replacement:
-        datatype: 'string'
-        description: 'Replacement for the pattern'
-    @outPorts = new noflo.OutPorts
-      out:
-        datatype: 'string'
+  c.process (input, output) ->
+    return unless input.has 'in'
 
-    @inPorts.pattern.on 'data', (data) =>
-      @pattern = new RegExp(data, 'g')
-    @inPorts.replacement.on 'data', (data) =>
-      @replacement = data.replace '\\\\n', "\n"
+    if input.has 'pattern'
+      pattern = new RegExp input.getData('pattern'), 'g'
+    replacement = ''
+    if input.has 'replacement'
+      replacement = input.getData('replacement').replace '\\\\n', "\n"
 
-    @inPorts.in.on 'begingroup', (group) =>
-      @outPorts.out.beginGroup group
-    @inPorts.in.on 'data', (data) =>
-      string = data
-      if @pattern?
-        string = "#{data}".replace @pattern, @replacement
-      @outPorts.out.send string
-    @inPorts.in.on 'endgroup', =>
-      @outPorts.out.endGroup()
-    @inPorts.in.on 'disconnect', =>
-      @outPorts.out.disconnect()
-
-exports.getComponent = -> new Replace
+    data = input.getData 'in'
+    return unless data
+    unless pattern
+      output.sendDone
+        out: data
+      return
+    output.sendDone
+      out: "#{data}".replace pattern, replacement

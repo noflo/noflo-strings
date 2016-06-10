@@ -50,8 +50,11 @@ describe 'TemplateReplace component', ->
         chai.expect(data).to.equal 'I am a happy person.'
         done()
       template.send 'I am a &adjective &noun.'
+      token.connect()
       token.send '&adjective'
       token.send '&noun'
+      token.disconnect()
+      ins.connect()
       ins.send 'happy'
       ins.send 'person'
       ins.disconnect()

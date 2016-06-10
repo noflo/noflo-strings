@@ -1,30 +1,17 @@
 noflo = require("noflo")
-_ = require("underscore")
 
-class EscapeQuotes extends noflo.Component
+exports.getComponent = ->
+  c = new noflo.Component
+  c.description = "Escape all quotes in a string"
 
-  description: "Escape all quotes in a string"
+  c.inPorts.add 'in',
+    datatype: 'string'
+    description: 'String to escape quotes from'
+  c.outPorts.add 'out',
+    datatype: 'string'
+    description: 'Escaped string'
 
-  constructor: ->
-    @inPorts = new noflo.InPorts
-      in:
-        datatype: 'string'
-        description: 'String to escape quotes from'
-    @outPorts = new noflo.OutPorts
-      out:
-        datatype: 'string'
-        description: 'Escaped string'
-
-    @inPorts.in.on "begingroup", (group) =>
-      @outPorts.out.beginGroup(group)
-
-    @inPorts.in.on "data", (data) =>
-      @outPorts.out.send data.replace /\"/g, "\\\""
-
-    @inPorts.in.on "endgroup", (group) =>
-      @outPorts.out.endGroup()
-
-    @inPorts.in.on "disconnect", =>
-      @outPorts.out.disconnect()
-
-exports.getComponent = -> new EscapeQuotes
+  c.process (input, output) ->
+    data = input.getData 'in'
+    output.sendDone
+      out: data.replace /\"/g, "\\\""

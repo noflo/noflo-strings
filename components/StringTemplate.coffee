@@ -1,26 +1,27 @@
 noflo = require 'noflo'
 _ = require 'underscore'
 
-class StringTemplate extends noflo.Component
-  constructor: ->
-    @template = null
-    @inPorts = new noflo.InPorts
-      template:
-        datatype: 'string'
-        description: 'Templating string'
-      in:
-        datatype: 'object'
-        description: 'Object containing key/value set used to run the template'
-    @outPorts = new noflo.OutPorts
-      out:
-        datatype: 'string'
+exports.getComponent = ->
+  c = new noflo.Component
+  c.description = 'Produce a string from input data with a given template'
 
-    @inPorts.template.on 'data', (data) =>
-      @template = _.template data
+  c.inPorts.add 'template',
+    datatype: 'string'
+    description: 'Templating string'
+    control: true
+    required: true
+  c.inPorts.add 'in',
+    datatype: 'object'
+    description: 'Object containing key/value set used to run the template'
+  c.outPorts.add 'out',
+    datatype: 'string'
 
-    @inPorts.in.on 'data', (data) =>
-      @outPorts.out.send @template data
-    @inPorts.in.on 'disconnect', =>
-      @outPorts.out.disconnect()
+  c.process (input, output) ->
+    return unless input.has 'in', 'template'
 
-exports.getComponent = -> new StringTemplate
+    data = input.get 'in'
+    return unless data.type is 'data'
+
+    template = _.template input.getData 'template'
+    output.sendDone
+      out: template data.data

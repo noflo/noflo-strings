@@ -1,25 +1,19 @@
 noflo = require("noflo")
 
-class LowerCaseString extends noflo.Component
+exports.getComponent = ->
+  c = new noflo.Component
+  c.description = "toLowerCase on all incoming IPs (assuming they are strings)"
 
-  description: "toLowerCase on all incoming IPs (assuming they are strings)"
+  c.inPorts.add 'in',
+    datatype: 'string'
+    description: 'Mixed-case string'
+  c.outPorts.add 'out',
+    datatype: 'string'
+    description: 'All-lowercase string'
 
-  constructor: ->
-    @inPorts =
-      in: new noflo.Port "string"
-    @outPorts =
-      out: new noflo.Port
+  c.process (input, output) ->
+    data = input.getData 'in'
+    return unless data
 
-    @inPorts.in.on "begingroup", (group) =>
-      @outPorts.out.beginGroup(group)
-
-    @inPorts.in.on "data", (data) =>
-      @outPorts.out.send data.toLowerCase()
-
-    @inPorts.in.on "endgroup", (group) =>
-      @outPorts.out.endGroup()
-
-    @inPorts.in.on "disconnect", =>
-      @outPorts.out.disconnect()
-
-exports.getComponent = -> new LowerCaseString
+    output.sendDone
+      out: data.toLowerCase()

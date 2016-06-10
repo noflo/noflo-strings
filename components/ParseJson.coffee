@@ -1,38 +1,34 @@
 noflo = require "noflo"
 
-class ParseJson extends noflo.Component
-  constructor: ->
-    @try = false
+exports.getComponent = ->
+  c = new noflo.Component
+  c.description = 'Parse a JSON string'
 
-    @inPorts = new noflo.InPorts
-      in:
-        datatype: 'string'
-        description: 'JSON description to parse'
-      try:
-        datatype: 'all'
-    @outPorts = new noflo.OutPorts
-      out:
-        datatype: 'object'
-        description: 'Parsed object'
+  c.inPorts.add 'in',
+    datatype: 'string'
+    description: 'JSON description to parse'
+  c.inPorts.add 'try',
+    datatype: 'boolean'
+    description: 'Deprecated'
+  c.outPorts.add 'out',
+    datatype: 'object'
+    description: 'Parsed object'
+  c.outPorts.add 'error',
+    datatype: 'object'
 
-    @inPorts.try.on "data", (data) =>
-      @try = true if data is "true"
+  c.inPorts.try.on 'data', (data) ->
+    console.warn 'ParseJson try port is deprecated'
 
-    @inPorts.in.on "begingroup", (group) =>
-      @outPorts.out.beginGroup group
+  c.process (input, output) ->
+    return unless input.has 'in'
+    data = input.getData 'in'
+    return unless data
 
-    @inPorts.in.on "data", (data) =>
-      try
-        data = JSON.parse data
-      catch e
-        data = JSON.parse data unless @try
+    try
+      result = JSON.parse data
+    catch e
+      output.sendDone e
+      return
 
-      @outPorts.out.send data
-
-    @inPorts.in.on "endgroup", =>
-      @outPorts.out.endGroup()
-
-    @inPorts.in.on "disconnect", =>
-      @outPorts.out.disconnect()
-
-exports.getComponent = -> new ParseJson
+    output.sendDone
+      out: result

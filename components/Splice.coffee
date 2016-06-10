@@ -1,55 +1,42 @@
 noflo = require("noflo")
 _ = require("underscore")
 
-class SpliceString extends noflo.Component
+exports.getComponent = ->
+  c = new noflo.Component
+  c.description = "interlaces two arrays of string into a string"
 
-  description: "interlaces two arrays of string into a string"
+  c.inPorts.add 'in',
+    datatype: 'array'
+    description: 'Array to interlace (2 consecutive IPs)'
+  c.inPorts.add 'assoc',
+    datatype: 'string'
+    control: true
+    default: ':'
+  c.inPorts.add 'delim',
+    datatype: 'string'
+    control: true
+    default: ','
+  c.outPorts.add 'out',
+    datatype: 'string'
 
-  constructor: ->
-    @strings = null
-    @groups = []
-    @assoc = ":"
-    @delim = ","
+  c.process (input, output) ->
+    return unless input.has 'in'
 
-    @inPorts = new noflo.InPorts
-      in:
-        datatype: 'array'
-        description: 'Array to interlace (2 consecutive IPs)'
-      assoc:
-        datatype: 'string'
-      delim:
-        datatype: 'string'
-    @outPorts = new noflo.OutPorts
-      out:
-        datatype: 'string'
+    # Look into the buffer to see if we have two data packets
+    port = c.inPorts.in
+    buf = if input.scope then port.scopedBuffer[input.scope] else port.buffer
+    data = buf.filter (ip) -> ip.type is 'data'
+    return if data.length < 2
+    strings = []
+    until strings.length is 2
+      packet = input.get 'in'
+      continue unless packet.type is 'data'
+      strings.push packet.data
 
-    @inPorts.assoc.on "data", (@assoc) =>
-    @inPorts.delim.on "data", (@delim) =>
+    assoc = if input.has('assoc') then input.getData('assoc') else ':'
+    delim = if input.has('delim') then input.getData('delim') else ','
 
-    @inPorts.in.on "begingroup", (group) =>
-      @groups.push(group)
-
-    @inPorts.in.on "data", (data) =>
-      if @strings?
-        paired = _.zip(@strings, data)
-        strings = _.map(paired, ((pair) => pair.join(@assoc)))
-        out = strings.join(@delim)
-        groups = _.uniq(@groups)
-
-        for group in groups
-          @outPorts.out.beginGroup(group)
-
-        @outPorts.out.send(out)
-
-        for group in groups
-          @outPorts.out.endGroup(group)
-
-        @outPorts.out.disconnect()
-
-        @groups = []
-        @strings = null
-
-      else
-        @strings = data
-
-exports.getComponent = -> new SpliceString
+    paired = _.zip strings[0], strings[1]
+    strings = _.map(paired, ((pair) => pair.join(assoc)))
+    output.sendDone
+      out: strings.join delim

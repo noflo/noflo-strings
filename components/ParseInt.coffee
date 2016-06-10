@@ -1,35 +1,25 @@
 noflo = require "noflo"
 
-class ParseInt extends noflo.Component
-  constructor: ->
-    @inPorts = new noflo.InPorts
-      in:
-        datatype: 'string'
-        description: 'Strings to parse as an integer representation'
-      base:
-        datatype: 'number'
-        description: 'Base used to parse the string representation'
-    @outPorts = new noflo.OutPorts
-      out:
-        datatype: 'number'
-        description: 'Parsed number'
+exports.getComponent = ->
+  c = new noflo.Component
+  c.description = 'Parse a string to an integer'
+  c.inPorts.add 'in',
+    datatype: 'string'
+    description: 'String to parse as int representation'
+  c.inPorts.add 'base',
+    datatype: 'number'
+    description: 'Base used to parse the string representation'
+    control: true
+    default: 10
+  c.outPorts.add 'out',
+    datatype: 'number'
+    description: 'Parsed number'
 
-    @base = 10
+  c.process (input, output) ->
+    return unless input.has 'in'
+    data = input.getData 'in'
 
-    @inPorts.base.on "data", (base) =>
-      @base = base
+    base = if input.has('base') then input.getData('base') else 10
 
-    @inPorts.in.on "begingroup", (group) =>
-      return unless @outPorts.out.isAttached()
-      @outPorts.out.beginGroup group
-    @inPorts.in.on "data", (data) =>
-      return unless @outPorts.out.isAttached()
-      @outPorts.out.send(parseInt(data, @base))
-    @inPorts.in.on "endgroup", =>
-      return unless @outPorts.out.isAttached()
-      @outPorts.out.endGroup()
-    @inPorts.in.on "disconnect", =>
-      return unless @outPorts.out.isAttached()
-      @outPorts.out.disconnect()
-
-exports.getComponent = -> new ParseInt
+    output.sendDone
+      out: parseInt data, base

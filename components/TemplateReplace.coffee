@@ -1,79 +1,77 @@
 noflo = require "noflo"
 _ = require "underscore"
 
-class TemplateReplace extends noflo.Component
-
-  description: "The inverse of 'Replace': fix the template and pass in
+exports.getComponent = ->
+  c = new noflo.Component
+  c.description = "The inverse of 'Replace': fix the template and pass in
   an object of patterns and replacements."
 
-  constructor: ->
-    @template = null
-    @default = ''
+  c.inPorts.add 'in',
+    datatype: 'object'
+  c.inPorts.add 'token',
+    datatype: 'string'
+  c.inPorts.add 'template',
+    datatype: 'string'
+    control: true
+  # Default value for non-string input
+  c.inPorts.add 'default',
+    datatype: 'string'
+    control: true
+  c.outPorts.add 'out',
+    datatype: 'string'
 
-    @inPorts = new noflo.InPorts
-      in:
-        datatype: 'object'
-      template:
-        datatype: 'string'
-      token:
-        datatype: 'string'
-      # Default value for non-string input
-      default:
-        datatype: 'string'
-    @outPorts = new noflo.OutPorts
-      out:
-        datatype: 'string'
+  c.process (input, output) ->
+    return unless input.has 'template', 'in'
 
-    @inPorts.default.on "data", (@default) =>
+    template = input.getData 'template'
+    return unless _.isString template
 
-    @inPorts.template.on "data", (template) =>
-      @template = template if _.isString template
+    defaults = if input.has('default') then input.getData('default') else ''
 
-    @inPorts.token.on "connect", =>
-      @tokens = []
-    @inPorts.token.on "data", (token) =>
-      @tokens.push token
+    inputPort = c.inPorts.in
+    inputBuf = if input.scope then inputPort.scopedBuffer[input.scope] else inputPort.buffer
+    inputData = inputBuf.filter (ip) -> ip.type is 'data'
+    return unless inputData.length
 
-    @inPorts.in.on "connect", =>
-      @output = @template or ""
-      @tokenPos = 0
+    # Accept a map of replacements
+    if _.isObject inputData[0].data
+      data = input.get 'in'
 
-    @inPorts.in.on "begingroup", (group) =>
-      @outPorts.out.beginGroup group
+      result = template
+      for pattern, replacement of data.data
+        pattern = new RegExp(pattern, "g")
+        result = result.replace pattern, replacement
 
-    @inPorts.in.on "data", (data) =>
-      return unless @output?
+      # Send immediately
+      output.sendDone
+        out: result
+      return
 
-      # Accept a map of replacements
-      if _.isObject data
-        for pattern, replacement of data
-          pattern = new RegExp(pattern, "g")
-          @output = @output.replace pattern, replacement
+    # Also accept a series of IPs
+    c.autoOrdering = false
+    tokenPort = c.inPorts.token
+    tokenBuf = if input.scope then tokenPort.scopedBuffer[input.scope] else tokenPort.buffer
+    tokenData = tokenBuf.filter (ip) -> ip.type is 'data'
+    # There must be tokens
+    return unless tokenData.length
+    return if inputData.length < tokenData.length
 
-        # Send immediately
-        @outPorts.out.send @output
+    strings = []
+    tokens = []
+    while strings.length < tokenData.length
+      packet = input.get 'in'
+      continue unless packet.type is 'data'
+      strings.push packet.data
+    while tokens.length < tokenData.length
+      packet = input.get 'token'
+      continue unless packet.type is 'data'
+      tokens.push new RegExp packet.data, 'g'
 
-        # Clean up
-        delete @output
-        return
+    result = template
+    for string in strings
+      token = tokens.shift()
+      replacement = if _.isString string then string else defaults
+      result = result.replace token, replacement
 
-      # There must be tokens
-      return unless @tokens?
-
-      # Also accept a series of IPs
-      token = @tokens[@tokenPos++]
-      pattern = new RegExp token, 'g'
-      replacement = if _.isString data then data else @default
-      @output = @output.replace pattern, replacement
-
-    @inPorts.in.on "endgroup", =>
-      @outPorts.out.endGroup()
-
-    @inPorts.in.on "disconnect", =>
-      @outPorts.out.send @output if @output?
-      @outPorts.out.disconnect()
-
-      # Clean up
-      delete @output
-
-exports.getComponent = -> new TemplateReplace
+    output.sendDone
+      out: result

@@ -1,53 +1,48 @@
 noflo = require 'noflo'
-_ = require 'underscore'
 
-class Jsonify extends noflo.Component
-
-  description: "JSONify all incoming, unless a raw flag is set to
+exports.getComponent = ->
+  c = new noflo.Component
+  c.description = "JSONify all incoming, unless a raw flag is set to
   exclude data packets that are pure strings"
 
-  constructor: ->
-    @raw = false
-    @pretty = false
+  c.inPorts.add 'in',
+    datatype: 'object'
+    description: 'Object to convert into a JSON representation'
+  c.inPorts.add 'raw',
+    datatype: 'boolean'
+    description: 'Whether to send strings as is'
+    default: false
+    control: true
+  c.inPorts.add 'pretty',
+    datatype: 'boolean'
+    description: 'Make JSON output pretty'
+    default: false
+    control: true
+  c.outPorts.add 'out',
+    datatype: 'string'
+    description: 'JSON representation of the input object'
 
-    @inPorts = new noflo.InPorts
-      in:
-        datatype: 'object'
-        description: 'Object to convert into a JSON representation'
-      raw:
-        datatype: 'boolean'
-        description: 'Whether to send strings as is'
-      pretty:
-        datatype: 'boolean'
-        description: 'Make JSON output pretty'
-    @outPorts = new noflo.OutPorts
-      out:
-        datatype: 'string'
-        description: 'JSON representation of the input object'
+  c.process (input, output) ->
+    return unless input.has 'in'
+    data = input.getData 'in'
+    return unless data
 
-    @inPorts.raw.on 'data', (raw) =>
-      @raw = String(raw) is 'true'
-    @inPorts.pretty.on 'data', (pretty) =>
-      @pretty = String(pretty) is 'true'
+    raw = false
+    if input.has 'raw'
+      raw = String(input.getData('raw')) is 'true'
+    pretty = false
+    if input.has 'pretty'
+      pretty = String(input.getData('pretty')) is 'true'
 
-    @inPorts.in.on 'begingroup', (group) =>
-      @outPorts.out.beginGroup group
+    if raw and typeof data is 'string'
+      output.sendDone
+        out: data
+      return
 
-    @inPorts.in.on 'data', (data) =>
-      if @raw and _.isString data
-        @outPorts.out.send data
-        return
+    if pretty
+      output.sendDone
+        out: JSON.stringify data, null, 4
+      return
 
-      if @pretty
-        @outPorts.out.send JSON.stringify data, null, 4
-        return
-
-      @outPorts.out.send JSON.stringify data
-
-    @inPorts.in.on 'endgroup', (group) =>
-      @outPorts.out.endGroup()
-
-    @inPorts.in.on 'disconnect', =>
-      @outPorts.out.disconnect()
-
-exports.getComponent = -> new Jsonify
+    output.sendDone
+      out: JSON.stringify data

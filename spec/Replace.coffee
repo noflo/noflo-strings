@@ -1,27 +1,38 @@
 noflo = require 'noflo'
 unless noflo.isBrowser()
-  chai = require 'chai' unless chai
-  Replace = require '../components/Replace.coffee'
+  chai = require 'chai'
+  path = require 'path'
+  baseDir = path.resolve __dirname, '../'
 else
-  Replace = require 'noflo-strings/components/Replace.js'
+  baseDir = 'noflo-strings'
 
 describe 'Replace component', ->
+  loader = null
   c = null
   ins = null
   pattern = null
   replacement = null
   out = null
 
-  beforeEach ->
-    c = Replace.getComponent()
-    ins = noflo.internalSocket.createSocket()
-    pattern = noflo.internalSocket.createSocket()
-    replacement = noflo.internalSocket.createSocket()
-    out = noflo.internalSocket.createSocket()
-    c.inPorts.in.attach ins
-    c.inPorts.pattern.attach pattern
-    c.inPorts.replacement.attach replacement
-    c.outPorts.out.attach out
+  before ->
+    loader = new noflo.ComponentLoader baseDir
+  beforeEach (done) ->
+    @timeout 4000
+    loader.load 'strings/Replace', (err, instance) ->
+      return done err if err
+      c = instance
+      ins = noflo.internalSocket.createSocket()
+      pattern = noflo.internalSocket.createSocket()
+      replacement = noflo.internalSocket.createSocket()
+      c.inPorts.in.attach ins
+      c.inPorts.pattern.attach pattern
+      c.inPorts.replacement.attach replacement
+      out = noflo.internalSocket.createSocket()
+      c.outPorts.out.attach out
+      done()
+  afterEach ->
+    c.outPorts.out.detach out
+    out = null
 
   describe 'when instantiated', ->
     it 'should have an input port', ->

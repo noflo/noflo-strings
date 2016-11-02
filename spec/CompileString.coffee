@@ -1,9 +1,10 @@
 noflo = require 'noflo'
 unless noflo.isBrowser()
-  chai = require 'chai' unless chai
-  CompileString = require '../components/CompileString.coffee'
+  chai = require 'chai'
+  path = require 'path'
+  baseDir = path.resolve __dirname, '../'
 else
-  CompileString = require 'noflo-strings/components/CompileString.js'
+  baseDir = 'noflo-strings'
 
 describe 'CompileString component', ->
   c = null
@@ -11,12 +12,17 @@ describe 'CompileString component', ->
   delim = null
   out = null
 
-  before ->
-    c = CompileString.getComponent()
-    ins = noflo.internalSocket.createSocket()
-    delim = noflo.internalSocket.createSocket()
-    c.inPorts.in.attach ins
-    c.inPorts.delimiter.attach delim
+  before (done) ->
+    @timeout 4000
+    loader = new noflo.ComponentLoader baseDir
+    loader.load 'strings/CompileString', (err, instance) ->
+      return done err if err
+      c = instance
+      ins = noflo.internalSocket.createSocket()
+      delim = noflo.internalSocket.createSocket()
+      c.inPorts.in.attach ins
+      c.inPorts.delimiter.attach delim
+      done()
 
   beforeEach ->
     out = noflo.internalSocket.createSocket()

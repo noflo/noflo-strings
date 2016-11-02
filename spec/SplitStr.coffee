@@ -1,9 +1,10 @@
 noflo = require 'noflo'
 unless noflo.isBrowser()
-  chai = require 'chai' unless chai
-  SplitStr = require '../components/SplitStr.coffee'
+  chai = require 'chai'
+  path = require 'path'
+  baseDir = path.resolve __dirname, '../'
 else
-  SplitStr = require 'noflo-strings/components/SplitStr.js'
+  baseDir = 'noflo-strings'
 
 describe 'SplitStr component', ->
   c = null
@@ -11,14 +12,24 @@ describe 'SplitStr component', ->
   delimiter = null
   out = null
 
+  before (done) ->
+    @timeout 4000
+    loader = new noflo.ComponentLoader baseDir
+    loader.load 'strings/SplitStr', (err, instance) ->
+      return done err if err
+      c = instance
+      ins = noflo.internalSocket.createSocket()
+      delimiter = noflo.internalSocket.createSocket()
+      c.inPorts.in.attach ins
+      c.inPorts.delimiter.attach delimiter
+      done()
   beforeEach ->
-    c = SplitStr.getComponent()
-    ins = noflo.internalSocket.createSocket()
-    delimiter = noflo.internalSocket.createSocket()
     out = noflo.internalSocket.createSocket()
-    c.inPorts.in.attach ins
-    c.inPorts.delimiter.attach delimiter
     c.outPorts.out.attach out
+
+  afterEach ->
+    c.outPorts.out.detach out
+    out = null
 
   describe 'when instantiated', ->
     it 'should have an input port', ->

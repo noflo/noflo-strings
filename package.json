@@ -63,7 +63,7 @@
       "Quote": "components/Quote.coffee",
       "Replace": "components/Replace.coffee",
       "SendString": "components/SendString.coffee",
-      "Sift3Distance": "./components/Sift3Distance.coffee",
+      "Sift3Distance": "components/Sift3Distance.coffee",
       "Splice": "components/Splice.coffee",
       "SplitStr": "components/SplitStr.coffee",
       "StringTemplate": "components/StringTemplate.coffee",

@@ -27,8 +27,8 @@ exports.getComponent = ->
 
     matches = {}
     matchKeys = []
-    for from, to of match
-      matches[from.toString()] = to.toString()
+    for fromMatch, toMatch of match
+      matches[fromMatch.toString()] = toMatch.toString()
     matchKeys = _.keys matches
 
     matchKeyIndex = matchKeys.indexOf string.toString()

@@ -59,9 +59,11 @@ describe 'Base64Encode component', ->
         done()
 
       ins.connect()
+      ins.beginGroup 'stream'
       ins.send 'Hello, '
       ins.send 'World'
       ins.send '!'
+      ins.endGroup()
       ins.disconnect()
 
     it 'test encoding a buffer', (done) ->

@@ -64,8 +64,10 @@ describe 'CompileString component', ->
       delim.send ''
 
       ins.connect()
+      ins.beginGroup 1
       ins.send 'foo'
       ins.send 'bar'
+      ins.endGroup()
       ins.disconnect()
 
     it 'delimiter should be between the strings', (done) ->
@@ -80,6 +82,8 @@ describe 'CompileString component', ->
       delim.send '-'
 
       ins.connect()
+      ins.beginGroup 2
       ins.send 'foo'
       ins.send 'bar'
+      ins.endGroup()
       ins.disconnect()

@@ -20,7 +20,7 @@ exports.getComponent = ->
      string (one element per IP)'
 
   c.process (input, output) ->
-    return unless input.has 'in'
+    return unless input.hasData 'in'
 
     delimiter = if input.has('delimiter') then input.getData('delimiter') else "\n"
     first = delimiter.substr 0, 1
@@ -29,10 +29,8 @@ exports.getComponent = ->
       # Handle regular expressions and not simply a slash
       delimiter = new RegExp delimiter.substr 1, delimiter.length - 2
 
-    data = input.get 'in'
-    return unless data.type is 'data'
-
-    strings = data.data.split delimiter
+    data = input.getData 'in'
+    strings = data.split delimiter
     for string in strings
       output.send
         out: string

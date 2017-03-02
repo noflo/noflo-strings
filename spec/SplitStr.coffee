@@ -44,9 +44,7 @@ describe 'SplitStr component', ->
 
       out.on 'data', (data) ->
         chai.expect(packets.shift()).to.deep.equal data
-      out.on 'disconnect', ->
-        chai.expect(packets.length).to.equal 0
-        done()
+        done() unless packets.length
 
       ins.connect()
       ins.send 'abc\n123'
@@ -57,9 +55,7 @@ describe 'SplitStr component', ->
 
       out.on 'data', (data) ->
         chai.expect(packets.shift()).to.deep.equal data
-      out.on 'disconnect', ->
-        chai.expect(packets.length).to.equal 0
-        done()
+        done() unless packets.length
 
       delimiter.send ','
 
@@ -72,9 +68,7 @@ describe 'SplitStr component', ->
 
       out.on 'data', (data) ->
         chai.expect(packets.shift()).to.deep.equal data
-      out.on 'disconnect', ->
-        chai.expect(packets.length).to.equal 0
-        done()
+        done() unless packets.length
 
       delimiter.send '/[\n]*[-]{3}[\n]/'
 

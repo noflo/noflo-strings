@@ -28,54 +28,24 @@
   },
   "license": "MIT",
   "dependencies": {
-    "noflo": "0.x >= 0.8",
+    "noflo": "^1.0.0",
     "underscore": "~1.8.3",
     "btoa": "~1.1.2"
   },
   "devDependencies": {
     "chai": "^4.0.0",
-    "coffee-loader": "^0.7.2",
-    "coffee-script": "^1.12.0",
-    "fbp-loader": "^0.1.1",
     "grunt": "^1.0.1",
     "grunt-coffeelint": "^0.0.16",
-    "grunt-contrib-coffee": "^1.0.0",
+    "grunt-contrib-coffee": "^2.0.0",
     "grunt-contrib-uglify": "^3.0.1",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-mocha-phantomjs": "^4.0.0",
     "grunt-mocha-test": "^0.13.2",
-    "grunt-noflo-browser": "^1.4.0",
-    "json-loader": "^0.5.4",
+    "grunt-noflo-browser": "^1.5.0",
     "mocha": "^4.0.0"
   },
   "noflo": {
-    "icon": "font",
-    "components": {
-      "Base64Encode": "components/Base64Encode.coffee",
-      "CompileString": "components/CompileString.coffee",
-      "ConvertEncoding": "components/ConvertEncoding.coffee",
-      "EscapeQuotes": "components/EscapeQuotes.coffee",
-      "Filter": "components/Filter.coffee",
-      "Jsonify": "components/Jsonify.coffee",
-      "LowerCaseString": "components/LowerCaseString.coffee",
-      "MatchReplace": "components/MatchReplace.coffee",
-      "ParseFloat": "components/ParseFloat.coffee",
-      "ParseInt": "components/ParseInt.coffee",
-      "ParseJson": "components/ParseJson.coffee",
-      "Quote": "components/Quote.coffee",
-      "Replace": "components/Replace.coffee",
-      "SendString": "components/SendString.coffee",
-      "Sift3Distance": "components/Sift3Distance.coffee",
-      "Splice": "components/Splice.coffee",
-      "SplitStr": "components/SplitStr.coffee",
-      "StringTemplate": "components/StringTemplate.coffee",
-      "SubStr": "components/SubStr.coffee",
-      "TemplateReplace": "components/TemplateReplace.coffee",
-      "ToString": "components/ToString.coffee"
-    },
-    "graphs": {
-      "SendJson": "graphs/SendJson.fbp"
-    }
+    "icon": "font"
   },
   "scripts": {
     "test": "grunt test"

@@ -3,4 +3,6 @@ INPORT=SendString.IN:IN
 OUTPORT=ParseJson.OUT:OUT
 OUTPORT=ParseJson.ERROR:ERROR
 
+# @description Send the parsed JSON when receiving a packet
+
 SendString(strings/SendString) OUT -> IN ParseJson(strings/ParseJson)

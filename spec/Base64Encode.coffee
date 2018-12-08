@@ -1,11 +1,3 @@
-noflo = require 'noflo'
-unless noflo.isBrowser()
-  chai = require 'chai'
-  path = require 'path'
-  baseDir = path.resolve __dirname, '../'
-else
-  baseDir = 'noflo-strings'
-
 describe 'Base64Encode component', ->
   c = null
   ins = null

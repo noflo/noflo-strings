@@ -3,16 +3,16 @@
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-describe('TemplateReplace component', function() {
+describe('TemplateReplace component', () => {
   let c = null;
   let template = null;
   let token = null;
   let ins = null;
   let out = null;
-  before(function(done) {
+  before(function (done) {
     this.timeout(4000);
     const loader = new noflo.ComponentLoader(baseDir);
-    return loader.load('strings/TemplateReplace', function(err, instance) {
+    return loader.load('strings/TemplateReplace', (err, instance) => {
       if (err) { return done(err); }
       c = instance;
       template = noflo.internalSocket.createSocket();
@@ -24,30 +24,30 @@ describe('TemplateReplace component', function() {
       return done();
     });
   });
-  beforeEach(function() {
+  beforeEach(() => {
     out = noflo.internalSocket.createSocket();
     return c.outPorts.out.attach(out);
   });
-  afterEach(function() {
+  afterEach(() => {
     c.outPorts.out.detach(out);
     return out = null;
   });
 
-  describe('with an object containing patterns and replacements', () => it('should return a templated string', function(done) {
-    out.on('data', function(data) {
+  describe('with an object containing patterns and replacements', () => it('should return a templated string', (done) => {
+    out.on('data', (data) => {
       chai.expect(data).to.equal('I am a happy person.');
       return done();
     });
     template.send('I am a &adjective &noun.');
     ins.send({
       '&adjective': 'happy',
-      '&noun': 'person'
+      '&noun': 'person',
     });
     return ins.disconnect();
   }));
 
-  return describe('with a series of tokens', () => it('should return a templated string', function(done) {
-    out.on('data', function(data) {
+  return describe('with a series of tokens', () => it('should return a templated string', (done) => {
+    out.on('data', (data) => {
       chai.expect(data).to.equal('I am a happy person.');
       return done();
     });

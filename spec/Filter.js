@@ -3,15 +3,15 @@
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-describe('Filter component', function() {
+describe('Filter component', () => {
   let c = null;
   let pattern = null;
   let ins = null;
   let out = null;
-  before(function(done) {
+  before(function (done) {
     this.timeout(4000);
     const loader = new noflo.ComponentLoader(baseDir);
-    return loader.load('strings/Filter', function(err, instance) {
+    return loader.load('strings/Filter', (err, instance) => {
       if (err) { return done(err); }
       c = instance;
       pattern = noflo.internalSocket.createSocket();
@@ -21,21 +21,21 @@ describe('Filter component', function() {
       return done();
     });
   });
-  beforeEach(function() {
+  beforeEach(() => {
     out = noflo.internalSocket.createSocket();
     return c.outPorts.out.attach(out);
   });
-  afterEach(function() {
+  afterEach(() => {
     c.outPorts.out.detach(out);
     return out = null;
   });
 
-  return describe('with a given pattern', () => it('should only send unfiltered data IPs', function(done) {
+  return describe('with a given pattern', () => it('should only send unfiltered data IPs', (done) => {
     const expected = [
       'abc',
-      'a24c'
+      'a24c',
     ];
-    out.on('data', function(data) {
+    out.on('data', (data) => {
       chai.expect(data).to.eql(expected.shift());
       if (expected.length) { return; }
       return done();

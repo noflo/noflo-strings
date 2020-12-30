@@ -3,14 +3,14 @@
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-describe('Quote component', function() {
+describe('Quote component', () => {
   let c = null;
   let ins = null;
   let out = null;
-  before(function(done) {
+  before(function (done) {
     this.timeout(4000);
     const loader = new noflo.ComponentLoader(baseDir);
-    return loader.load('strings/Quote', function(err, instance) {
+    return loader.load('strings/Quote', (err, instance) => {
       if (err) { return done(err); }
       c = instance;
       ins = noflo.internalSocket.createSocket();
@@ -18,15 +18,14 @@ describe('Quote component', function() {
       return done();
     });
   });
-  beforeEach(function() {
+  beforeEach(() => {
     out = noflo.internalSocket.createSocket();
     return c.outPorts.out.attach(out);
   });
   afterEach(() => c.outPorts.out.detach(out));
 
-  return describe('receiving a string', () => it('should quote it', function(done) {
-
-    out.on('data', function(data) {
+  return describe('receiving a string', () => it('should quote it', (done) => {
+    out.on('data', (data) => {
       chai.expect(data).to.equal('\'Hello, World!\'');
       return done();
     });

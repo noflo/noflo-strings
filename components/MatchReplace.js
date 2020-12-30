@@ -3,27 +3,26 @@
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const noflo = require("noflo");
-const _ = require("underscore");
+const noflo = require('noflo');
+const _ = require('underscore');
 
-exports.getComponent = function() {
-  const c = new noflo.Component;
+exports.getComponent = function () {
+  const c = new noflo.Component();
   c.description = 'Replace string packets using a dictionary';
 
   c.inPorts.add('in',
-    {datatype: 'string'});
+    { datatype: 'string' });
   c.inPorts.add('match', {
     datatype: 'object',
-    description: `Dictionary object with key matching \
-the input object and value being the replacement item`,
+    description: 'Dictionary object with key matching \
+the input object and value being the replacement item',
     control: true,
-    required: true
-  }
-  );
+    required: true,
+  });
   c.outPorts.add('out',
-    {datatype: 'string'});
+    { datatype: 'string' });
 
-  return c.process(function(input, output) {
+  return c.process((input, output) => {
     if (!input.has('in', 'match')) { return; }
     const match = input.getData('match');
     if (!match) { return; }
@@ -34,7 +33,7 @@ the input object and value being the replacement item`,
 
     const matches = {};
     let matchKeys = [];
-    for (let fromMatch in match) {
+    for (const fromMatch in match) {
       const toMatch = match[fromMatch];
       matches[fromMatch.toString()] = toMatch.toString();
     }
@@ -46,7 +45,6 @@ the input object and value being the replacement item`,
       string = matches[matchKeys[matchKeyIndex]];
     }
 
-    return output.sendDone({
-      out: string});
+    return output.sendDone({ out: string });
   });
 };

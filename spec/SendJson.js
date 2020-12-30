@@ -3,16 +3,16 @@
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-describe('SendJson component', function() {
+describe('SendJson component', () => {
   let c = null;
   let ins = null;
   let json = null;
   let out = null;
   let error = null;
-  before(function(done) {
+  before(function (done) {
     this.timeout(4000);
     const loader = new noflo.ComponentLoader(baseDir);
-    return loader.load('strings/SendJson', function(err, instance) {
+    return loader.load('strings/SendJson', (err, instance) => {
       if (err) { return done(err); }
       c = instance;
       ins = noflo.internalSocket.createSocket();
@@ -22,32 +22,32 @@ describe('SendJson component', function() {
       return c.start(done);
     });
   });
-  beforeEach(function() {
+  beforeEach(() => {
     out = noflo.internalSocket.createSocket();
     c.outPorts.out.attach(out);
     error = noflo.internalSocket.createSocket();
     return c.outPorts.error.attach(error);
   });
-  afterEach(function() {
+  afterEach(() => {
     c.outPorts.out.detach(out);
     out = null;
     c.outPorts.error.detach(error);
     return error = null;
   });
 
-  describe('when receiving a bang and valid JSON', () => it('should send the parsed JSON out with banged brackets', function(done) {
+  describe('when receiving a bang and valid JSON', () => it('should send the parsed JSON out with banged brackets', (done) => {
     const expected = [
       '< a',
       'DATA [1,2,3]',
-      '>'
+      '>',
     ];
     const received = [];
 
     error.on('data', done);
-    out.on('begingroup', group => received.push(`< ${group}`));
-    out.on('data', data => received.push(`DATA ${JSON.stringify(data)}`));
+    out.on('begingroup', (group) => received.push(`< ${group}`));
+    out.on('data', (data) => received.push(`DATA ${JSON.stringify(data)}`));
     out.on('endgroup', () => received.push('>'));
-    out.on('disconnect', function() {
+    out.on('disconnect', () => {
       chai.expect(received).to.eql(expected);
       return done();
     });
@@ -60,19 +60,19 @@ describe('SendJson component', function() {
     return ins.disconnect();
   }));
 
-  return describe('when receiving a bang and invalid JSON', () => it('should send the error out with banged brackets', function(done) {
+  return describe('when receiving a bang and invalid JSON', () => it('should send the error out with banged brackets', (done) => {
     const expected = [
       '< a',
       'DATA',
-      '>'
+      '>',
     ];
     const received = [];
 
-    out.on('ip', ip => done(new Error(`Received unexpected ${ip.type} ${ip.data}`)));
-    error.on('begingroup', group => received.push(`< ${group}`));
-    error.on('data', data => received.push("DATA"));
+    out.on('ip', (ip) => done(new Error(`Received unexpected ${ip.type} ${ip.data}`)));
+    error.on('begingroup', (group) => received.push(`< ${group}`));
+    error.on('data', (data) => received.push('DATA'));
     error.on('endgroup', () => received.push('>'));
-    error.on('disconnect', function() {
+    error.on('disconnect', () => {
       chai.expect(received).to.eql(expected);
       return done();
     });

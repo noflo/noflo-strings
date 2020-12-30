@@ -5,37 +5,33 @@
  */
 const noflo = require('noflo');
 
-exports.getComponent = function() {
-  const c = new noflo.Component;
-  c.description = `JSONify all incoming, unless a raw flag is set to \
-exclude data packets that are pure strings`;
+exports.getComponent = function () {
+  const c = new noflo.Component();
+  c.description = 'JSONify all incoming, unless a raw flag is set to \
+exclude data packets that are pure strings';
 
   c.inPorts.add('in', {
     datatype: 'object',
-    description: 'Object to convert into a JSON representation'
-  }
-  );
+    description: 'Object to convert into a JSON representation',
+  });
   c.inPorts.add('raw', {
     datatype: 'boolean',
     description: 'Whether to send strings as is',
     default: false,
-    control: true
-  }
-  );
+    control: true,
+  });
   c.inPorts.add('pretty', {
     datatype: 'boolean',
     description: 'Make JSON output pretty',
     default: false,
-    control: true
-  }
-  );
+    control: true,
+  });
   c.outPorts.add('out', {
     datatype: 'string',
-    description: 'JSON representation of the input object'
-  }
-  );
+    description: 'JSON representation of the input object',
+  });
 
-  return c.process(function(input, output) {
+  return c.process((input, output) => {
     if (!input.has('in')) { return; }
     const data = input.getData('in');
     if (!data) { return; }
@@ -50,18 +46,15 @@ exclude data packets that are pure strings`;
     }
 
     if (raw && (typeof data === 'string')) {
-      output.sendDone({
-        out: data});
+      output.sendDone({ out: data });
       return;
     }
 
     if (pretty) {
-      output.sendDone({
-        out: JSON.stringify(data, null, 4)});
+      output.sendDone({ out: JSON.stringify(data, null, 4) });
       return;
     }
 
-    return output.sendDone({
-      out: JSON.stringify(data)});
+    return output.sendDone({ out: JSON.stringify(data) });
   });
 };

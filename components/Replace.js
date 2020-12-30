@@ -5,32 +5,29 @@
  */
 const noflo = require('noflo');
 
-exports.getComponent = function() {
-  const c = new noflo.Component;
-  c.description = `Given a fixed pattern and its replacement, replace all \
-occurrences in the incoming template.`;
+exports.getComponent = function () {
+  const c = new noflo.Component();
+  c.description = 'Given a fixed pattern and its replacement, replace all \
+occurrences in the incoming template.';
 
   c.inPorts.add('in', {
     datatype: 'string',
-    description: 'String to replace pattern in'
-  }
-  );
+    description: 'String to replace pattern in',
+  });
   c.inPorts.add('pattern', {
     datatype: 'string',
     description: 'Pattern to replace',
-    control: true
-  }
-  );
+    control: true,
+  });
   c.inPorts.add('replacement', {
     datatype: 'string',
     description: 'Replacement for the pattern',
-    control: true
-  }
-  );
+    control: true,
+  });
   c.outPorts.add('out',
-    {datatype: 'string'});
+    { datatype: 'string' });
 
-  return c.process(function(input, output) {
+  return c.process((input, output) => {
     let pattern;
     if (!input.has('in')) { return; }
 
@@ -39,17 +36,15 @@ occurrences in the incoming template.`;
     }
     let replacement = '';
     if (input.has('replacement')) {
-      replacement = input.getData('replacement').replace('\\\\n', "\n");
+      replacement = input.getData('replacement').replace('\\\\n', '\n');
     }
 
     const data = input.getData('in');
     if (!data) { return; }
     if (!pattern) {
-      output.sendDone({
-        out: data});
+      output.sendDone({ out: data });
       return;
     }
-    return output.sendDone({
-      out: `${data}`.replace(pattern, replacement)});
+    return output.sendDone({ out: `${data}`.replace(pattern, replacement) });
   });
 };

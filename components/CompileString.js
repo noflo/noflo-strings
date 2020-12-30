@@ -6,37 +6,34 @@
  */
 const noflo = require('noflo');
 
-exports.getComponent = function() {
-  const c = new noflo.Component;
+exports.getComponent = function () {
+  const c = new noflo.Component();
   c.description = 'Concatenate received strings with the given delimiter at the end of a stream';
 
   c.inPorts.add('delimiter', {
     datatype: 'string',
     description: 'String used to concatenate input strings',
-    default: "\n",
-    control: true
-  }
-  );
+    default: '\n',
+    control: true,
+  });
   c.inPorts.add('in', {
     datatype: 'string',
-    description: 'Strings to concatenate (one per IP)'
-  }
-  );
+    description: 'Strings to concatenate (one per IP)',
+  });
   c.outPorts.add('out', {
     datatype: 'string',
-    description: 'Concatenation of input strings'
-  }
-  );
+    description: 'Concatenation of input strings',
+  });
 
   c.forwardBrackets = {};
-  return c.process(function(input, output) {
+  return c.process((input, output) => {
     let bracket;
     if (!input.hasStream('in')) { return; }
     const stream = input.getStream('in');
 
     const brackets = [];
     const strings = [];
-    for (let packet of Array.from(stream)) {
+    for (const packet of Array.from(stream)) {
       if (packet.type === 'openBracket') {
         brackets.push(packet.data);
         continue;
@@ -47,17 +44,14 @@ exports.getComponent = function() {
       }
     }
 
-    const delimiter = input.has('delimiter') ? input.getData('delimiter') : "\n";
+    const delimiter = input.has('delimiter') ? input.getData('delimiter') : '\n';
     for (bracket of Array.from(brackets)) {
-      output.send({
-        out: new noflo.IP('openBracket', bracket)});
+      output.send({ out: new noflo.IP('openBracket', bracket) });
     }
-    output.send({
-      out: strings.join(delimiter)});
+    output.send({ out: strings.join(delimiter) });
     brackets.reverse();
     for (bracket of Array.from(brackets)) {
-      output.send({
-        out: new noflo.IP('closeBracket', bracket)});
+      output.send({ out: new noflo.IP('closeBracket', bracket) });
     }
     return output.done();
   });

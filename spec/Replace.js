@@ -3,7 +3,7 @@
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-describe('Replace component', function() {
+describe('Replace component', () => {
   let loader = null;
   let c = null;
   let ins = null;
@@ -12,9 +12,9 @@ describe('Replace component', function() {
   let out = null;
 
   before(() => loader = new noflo.ComponentLoader(baseDir));
-  beforeEach(function(done) {
+  beforeEach(function (done) {
     this.timeout(4000);
-    return loader.load('strings/Replace', function(err, instance) {
+    return loader.load('strings/Replace', (err, instance) => {
       if (err) { return done(err); }
       c = instance;
       ins = noflo.internalSocket.createSocket();
@@ -28,13 +28,13 @@ describe('Replace component', function() {
       return done();
     });
   });
-  afterEach(function() {
+  afterEach(() => {
     c.outPorts.out.detach(out);
     return out = null;
   });
 
-  describe('when instantiated', function() {
-    it('should have an input port', function() {
+  describe('when instantiated', () => {
+    it('should have an input port', () => {
       chai.expect(c.inPorts.in).to.be.an('object');
       chai.expect(c.inPorts.pattern).to.be.an('object');
       return chai.expect(c.inPorts.replacement).to.be.an('object');
@@ -42,12 +42,12 @@ describe('Replace component', function() {
     return it('should have an output port', () => chai.expect(c.outPorts.out).to.be.an('object'));
   });
 
-  return describe('replacement', function() {
-    it('test no pattern no replacement', function(done) {
+  return describe('replacement', () => {
+    it('test no pattern no replacement', (done) => {
       const packets = ['abc123'];
 
-      out.on('data', data => chai.expect(packets.shift()).to.deep.equal(data));
-      out.on('disconnect', function() {
+      out.on('data', (data) => chai.expect(packets.shift()).to.deep.equal(data));
+      out.on('disconnect', () => {
         chai.expect(packets.length).to.equal(0);
         return done();
       });
@@ -57,11 +57,11 @@ describe('Replace component', function() {
       return ins.disconnect();
     });
 
-    it('test no pattern', function(done) {
+    it('test no pattern', (done) => {
       const packets = ['abc123'];
 
-      out.on('data', data => chai.expect(packets.shift()).to.deep.equal(data));
-      out.on('disconnect', function() {
+      out.on('data', (data) => chai.expect(packets.shift()).to.deep.equal(data));
+      out.on('disconnect', () => {
         chai.expect(packets.length).to.equal(0);
         return done();
       });
@@ -73,11 +73,11 @@ describe('Replace component', function() {
       return ins.disconnect();
     });
 
-    it('test simple replacement', function(done) {
+    it('test simple replacement', (done) => {
       const packets = ['xyz123'];
 
-      out.on('data', data => chai.expect(packets.shift()).to.deep.equal(data));
-      out.on('disconnect', function() {
+      out.on('data', (data) => chai.expect(packets.shift()).to.deep.equal(data));
+      out.on('disconnect', () => {
         chai.expect(packets.length).to.equal(0);
         return done();
       });
@@ -90,11 +90,11 @@ describe('Replace component', function() {
       return ins.disconnect();
     });
 
-    it('test simple replacement with slashes', function(done) {
-      const packets = ["/abc/xyz/baz"];
+    it('test simple replacement with slashes', (done) => {
+      const packets = ['/abc/xyz/baz'];
 
-      out.on('data', data => chai.expect(packets.shift()).to.deep.equal(data));
-      out.on('disconnect', function() {
+      out.on('data', (data) => chai.expect(packets.shift()).to.deep.equal(data));
+      out.on('disconnect', () => {
         chai.expect(packets.length).to.equal(0);
         return done();
       });
@@ -107,11 +107,11 @@ describe('Replace component', function() {
       return ins.disconnect();
     });
 
-    it('test no replacement', function(done) {
+    it('test no replacement', (done) => {
       const packets = ['123'];
 
-      out.on('data', data => chai.expect(packets.shift()).to.deep.equal(data));
-      out.on('disconnect', function() {
+      out.on('data', (data) => chai.expect(packets.shift()).to.deep.equal(data));
+      out.on('disconnect', () => {
         chai.expect(packets.length).to.equal(0);
         return done();
       });
@@ -123,11 +123,11 @@ describe('Replace component', function() {
       return ins.disconnect();
     });
 
-    it('test replacement', function(done) {
+    it('test replacement', (done) => {
       const packets = ['xxx123'];
 
-      out.on('data', data => chai.expect(packets.shift()).to.deep.equal(data));
-      out.on('disconnect', function() {
+      out.on('data', (data) => chai.expect(packets.shift()).to.deep.equal(data));
+      out.on('disconnect', () => {
         chai.expect(packets.length).to.equal(0);
         return done();
       });
@@ -140,12 +140,12 @@ describe('Replace component', function() {
       return ins.disconnect();
     });
 
-    return it('test groups', function(done) {
+    return it('test groups', (done) => {
       const packets = ['g', 'xxx123'];
 
-      out.on('begingroup', group => chai.expect(packets.shift()).to.deep.equal(group));
-      out.on('data', data => chai.expect(packets.shift()).to.deep.equal(data));
-      out.on('disconnect', function() {
+      out.on('begingroup', (group) => chai.expect(packets.shift()).to.deep.equal(group));
+      out.on('data', (data) => chai.expect(packets.shift()).to.deep.equal(data));
+      out.on('disconnect', () => {
         chai.expect(packets.length).to.equal(0);
         return done();
       });

@@ -3,16 +3,16 @@
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-describe('Splice component', function() {
+describe('Splice component', () => {
   let c = null;
   let assoc = null;
   let delim = null;
   let ins = null;
   let out = null;
-  before(function(done) {
+  before(function (done) {
     this.timeout(4000);
     const loader = new noflo.ComponentLoader(baseDir);
-    return loader.load('strings/Splice', function(err, instance) {
+    return loader.load('strings/Splice', (err, instance) => {
       if (err) { return done(err); }
       c = instance;
       assoc = noflo.internalSocket.createSocket();
@@ -24,27 +24,27 @@ describe('Splice component', function() {
       return done();
     });
   });
-  beforeEach(function() {
+  beforeEach(() => {
     out = noflo.internalSocket.createSocket();
     return c.outPorts.out.attach(out);
   });
-  afterEach(function() {
+  afterEach(() => {
     c.outPorts.out.detach(out);
     return out = null;
   });
 
-  describe('interlacing two arrays of strings into a string', () => it('should return the correct string', function(done) {
-    out.on('data', function(data) {
+  describe('interlacing two arrays of strings into a string', () => it('should return the correct string', (done) => {
+    out.on('data', (data) => {
       chai.expect(data).to.equal('p:x,q:y,r:z');
       return done();
     });
 
-    ins.send(['p','q','r']);
-    return ins.send(['x','y','z']);
-}));
+    ins.send(['p', 'q', 'r']);
+    return ins.send(['x', 'y', 'z']);
+  }));
 
-  return describe('interlacing with custom associator and delimiter', () => it('should return the correct string', function(done) {
-    out.on('data', function(data) {
+  return describe('interlacing with custom associator and delimiter', () => it('should return the correct string', (done) => {
+    out.on('data', (data) => {
       chai.expect(data).to.equal('p=x|q=y|r=z');
       return done();
     });
@@ -52,7 +52,7 @@ describe('Splice component', function() {
     assoc.send('=');
     delim.send('|');
 
-    ins.send(['p','q','r']);
-    return ins.send(['x','y','z']);
-}));
+    ins.send(['p', 'q', 'r']);
+    return ins.send(['x', 'y', 'z']);
+  }));
 });

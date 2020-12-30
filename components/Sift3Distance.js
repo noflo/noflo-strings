@@ -4,16 +4,16 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const noflo = require("noflo");
+const noflo = require('noflo');
 
-const sift3 = function(s1, s2) {
-  let lcs, offset1, offset2;
+const sift3 = function (s1, s2) {
+  let lcs; let offset1; let
+    offset2;
   if ((s1 == null) || (s1.length === 0)) {
     if ((s2 == null) || (s2.length === 0)) {
       return 0;
-    } else {
-      return s2.length;
     }
+    return s2.length;
   }
   if ((s2 == null) || (s2.length === 0)) { return s1.length; }
   let c = (offset1 = (offset2 = (lcs = 0)));
@@ -42,22 +42,21 @@ const sift3 = function(s1, s2) {
   return ((s1.length + s2.length) / 2) - lcs;
 };
 
-exports.getComponent = function() {
-  const c = new noflo.Component;
-  c.description = "Compare distance between two strings using Sift3 algorithm";
+exports.getComponent = function () {
+  const c = new noflo.Component();
+  c.description = 'Compare distance between two strings using Sift3 algorithm';
 
   c.inPorts.add('string1',
-    {datatype: 'string'});
+    { datatype: 'string' });
   c.inPorts.add('string2',
-    {datatype: 'string'});
+    { datatype: 'string' });
 
   c.outPorts.add('out',
-    {datatype: 'number'});
+    { datatype: 'number' });
 
-  c.forwardBrackets =
-    {string2: ['out']};
+  c.forwardBrackets = { string2: ['out'] };
 
-  return c.process(function(input, output) {
+  return c.process((input, output) => {
     if (!input.has('string1', 'string2')) { return; }
     let s1 = input.get('string1');
     while (s1.type !== 'data') {
@@ -71,7 +70,6 @@ exports.getComponent = function() {
     }
     if (s2.type !== 'data') { return; }
 
-    return output.sendDone({
-      out: sift3(s1.data, s2.data)});
+    return output.sendDone({ out: sift3(s1.data, s2.data) });
   });
 };

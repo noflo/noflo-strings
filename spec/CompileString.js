@@ -3,16 +3,16 @@
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-describe('CompileString component', function() {
+describe('CompileString component', () => {
   let c = null;
   let ins = null;
   let delim = null;
   let out = null;
 
-  before(function(done) {
+  before(function (done) {
     this.timeout(4000);
     const loader = new noflo.ComponentLoader(baseDir);
-    return loader.load('strings/CompileString', function(err, instance) {
+    return loader.load('strings/CompileString', (err, instance) => {
       if (err) { return done(err); }
       c = instance;
       ins = noflo.internalSocket.createSocket();
@@ -23,29 +23,29 @@ describe('CompileString component', function() {
     });
   });
 
-  beforeEach(function() {
+  beforeEach(() => {
     out = noflo.internalSocket.createSocket();
     return c.outPorts.out.attach(out);
   });
-  afterEach(function() {
+  afterEach(() => {
     c.outPorts.out.detach(out);
     return out = null;
   });
 
-  describe('when instantiated', function() {
-    it('should have an input port', function() {
+  describe('when instantiated', () => {
+    it('should have an input port', () => {
       chai.expect(c.inPorts.in).to.be.an('object');
       return chai.expect(c.inPorts.delimiter).to.be.an('object');
     });
     return it('should have an output port', () => chai.expect(c.outPorts.out).to.be.an('object'));
   });
 
-  return describe('compiling a string', function() {
-    it('single string should be returned as-is', function(done) {
+  return describe('compiling a string', () => {
+    it('single string should be returned as-is', (done) => {
       const packets = ['foo'];
 
-      out.on('data', data => chai.expect(packets.shift()).to.deep.equal(data));
-      out.on('disconnect', function() {
+      out.on('data', (data) => chai.expect(packets.shift()).to.deep.equal(data));
+      out.on('disconnect', () => {
         chai.expect(packets.length).to.equal(0);
         return done();
       });
@@ -55,11 +55,11 @@ describe('CompileString component', function() {
       return ins.disconnect();
     });
 
-    it('two strings should be returned together', function(done) {
+    it('two strings should be returned together', (done) => {
       const packets = ['foobar'];
 
-      out.on('data', data => chai.expect(packets.shift()).to.deep.equal(data));
-      out.on('disconnect', function() {
+      out.on('data', (data) => chai.expect(packets.shift()).to.deep.equal(data));
+      out.on('disconnect', () => {
         chai.expect(packets.length).to.equal(0);
         return done();
       });
@@ -74,11 +74,11 @@ describe('CompileString component', function() {
       return ins.disconnect();
     });
 
-    return it('delimiter should be between the strings', function(done) {
+    return it('delimiter should be between the strings', (done) => {
       const packets = ['foo-bar'];
 
-      out.on('data', data => chai.expect(packets.shift()).to.deep.equal(data));
-      out.on('disconnect', function() {
+      out.on('data', (data) => chai.expect(packets.shift()).to.deep.equal(data));
+      out.on('disconnect', () => {
         chai.expect(packets.length).to.equal(0);
         return done();
       });

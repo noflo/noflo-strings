@@ -3,16 +3,16 @@
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-describe('Jsonify component', function() {
+describe('Jsonify component', () => {
   let c = null;
   let ins = null;
   let raw = null;
   let pretty = null;
   let out = null;
-  before(function(done) {
+  before(function (done) {
     this.timeout(4000);
     const loader = new noflo.ComponentLoader(baseDir);
-    return loader.load('strings/Jsonify', function(err, instance) {
+    return loader.load('strings/Jsonify', (err, instance) => {
       if (err) { return done(err); }
       c = instance;
       ins = noflo.internalSocket.createSocket();
@@ -24,30 +24,30 @@ describe('Jsonify component', function() {
       return done();
     });
   });
-  beforeEach(function() {
+  beforeEach(() => {
     out = noflo.internalSocket.createSocket();
     return c.outPorts.out.attach(out);
   });
-  afterEach(function() {
+  afterEach(() => {
     c.outPorts.out.detach(out);
     return out = null;
   });
 
-  describe('JSONifying an object', function() {
+  describe('JSONifying an object', () => {
     let fixture = null;
     beforeEach(() => fixture = {
       hello: 'World',
-      foo: [1,2]
+      foo: [1, 2],
     });
 
-    describe('with default settings', () => it('should send the expected JSON string', function(done) {
+    describe('with default settings', () => it('should send the expected JSON string', (done) => {
       const expected = [
-        JSON.stringify(fixture)
+        JSON.stringify(fixture),
       ];
       const received = [];
 
-      out.on('data', data => received.push(data));
-      out.on('disconnect', function() {
+      out.on('data', (data) => received.push(data));
+      out.on('disconnect', () => {
         chai.expect(received).to.eql(expected);
         return done();
       });
@@ -57,14 +57,14 @@ describe('Jsonify component', function() {
       return ins.disconnect();
     }));
 
-    return describe('with pretty setting', () => it('should send the expected JSON string', function(done) {
+    return describe('with pretty setting', () => it('should send the expected JSON string', (done) => {
       const expected = [
-        JSON.stringify(fixture, null, 4)
+        JSON.stringify(fixture, null, 4),
       ];
       const received = [];
 
-      out.on('data', data => received.push(data));
-      out.on('disconnect', function() {
+      out.on('data', (data) => received.push(data));
+      out.on('disconnect', () => {
         chai.expect(received).to.eql(expected);
         return done();
       });
@@ -76,18 +76,18 @@ describe('Jsonify component', function() {
     }));
   });
 
-  return describe('JSONifying a string', function() {
+  return describe('JSONifying a string', () => {
     let fixture = null;
     beforeEach(() => fixture = 'Hello World!');
 
-    describe('with default settings', () => it('should send the expected JSON string', function(done) {
+    describe('with default settings', () => it('should send the expected JSON string', (done) => {
       const expected = [
-        JSON.stringify(fixture)
+        JSON.stringify(fixture),
       ];
       const received = [];
 
-      out.on('data', data => received.push(data));
-      out.on('disconnect', function() {
+      out.on('data', (data) => received.push(data));
+      out.on('disconnect', () => {
         chai.expect(received).to.eql(expected);
         return done();
       });
@@ -97,14 +97,14 @@ describe('Jsonify component', function() {
       return ins.disconnect();
     }));
 
-    return describe('with raw setting', () => it('should send the expected JSON string', function(done) {
+    return describe('with raw setting', () => it('should send the expected JSON string', (done) => {
       const expected = [
-        fixture
+        fixture,
       ];
       const received = [];
 
-      out.on('data', data => received.push(data));
-      out.on('disconnect', function() {
+      out.on('data', (data) => received.push(data));
+      out.on('disconnect', () => {
         chai.expect(received).to.eql(expected);
         return done();
       });

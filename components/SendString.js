@@ -5,28 +5,25 @@
  */
 const noflo = require('noflo');
 
-exports.getComponent = function() {
-  const c = new noflo.Component;
+exports.getComponent = function () {
+  const c = new noflo.Component();
   c.description = 'Send a string when receiving a packet';
 
   c.inPorts.add('string', {
     datatype: 'string',
     description: 'String to send',
-    control: true
-  }
-  );
+    control: true,
+  });
   c.inPorts.add('in', {
     datatype: 'bang',
-    description: 'Send the string out'
-  }
-  );
+    description: 'Send the string out',
+  });
   c.outPorts.add('out',
-    {datatype: 'string'});
+    { datatype: 'string' });
 
-  return c.process(function(input, output) {
+  return c.process((input, output) => {
     if (!input.has('string', 'in')) { return; }
     const data = input.getData('in');
-    return output.sendDone({
-      out: input.getData('string')});
+    return output.sendDone({ out: input.getData('string') });
   });
 };

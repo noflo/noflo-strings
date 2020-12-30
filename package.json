@@ -28,6 +28,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "coffeescript": "^2.3.2",
     "noflo": "^1.0.0",
     "underscore": "~1.9.0",
     "btoa": "~1.2.1"
@@ -36,7 +37,6 @@
     "chai": "^4.2.0",
     "coffee-loader": "^0.9.0",
     "coffeelint": "^2.1.0",
-    "coffeescript": "^2.3.2",
     "fbp-loader": "^0.1.2",
     "karma": "^4.0.0",
     "karma-chai": "^0.1.0",

@@ -1,8 +1,3 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 const noflo = require('noflo');
 
 exports.getComponent = function () {
@@ -22,6 +17,6 @@ exports.getComponent = function () {
     const data = input.getData('in');
     if (!data) { return; }
 
-    return output.sendDone({ out: data.toLowerCase() });
+    output.sendDone({ out: data.toLowerCase() });
   });
 };

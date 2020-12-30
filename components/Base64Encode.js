@@ -1,13 +1,8 @@
-/*
- * decaffeinate suggestions:
- * DS101: Remove unnecessary use of Array.from
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
-let btoa;
 const noflo = require('noflo');
 
+let btoa;
 if (!noflo.isBrowser()) {
+  // eslint-disable-next-line global-require
   btoa = require('btoa');
 } else {
   ({
@@ -17,8 +12,7 @@ if (!noflo.isBrowser()) {
 
 exports.getComponent = function () {
   const c = new noflo.Component();
-  c.description = 'This component receives strings or Buffers and sends them out \
-Base64-encoded';
+  c.description = 'This component receives strings or Buffers and sends them out Base64-encoded';
 
   c.inPorts.add('in', {
     datatype: 'all',
@@ -31,35 +25,33 @@ Base64-encoded';
 
   c.forwardBrackets = {};
   return c.process((input, output) => {
-    let bracket;
     if (!input.hasStream('in')) { return; }
     const stream = input.getStream('in');
 
     const brackets = [];
     let string = '';
-    for (const packet of Array.from(stream)) {
+    stream.forEach((packet) => {
       if (packet.type === 'openBracket') {
         brackets.push(packet.data);
-        continue;
+        return;
       }
       if (packet.type === 'data') {
         if (!noflo.isBrowser() && packet.data instanceof Buffer) {
           string += packet.data.toString('utf-8');
-          continue;
+          return;
         }
         string += packet.data;
-        continue;
       }
-    }
+    });
 
-    for (bracket of Array.from(brackets)) {
+    brackets.forEach((bracket) => {
       output.send({ out: new noflo.IP('openBracket', bracket) });
-    }
+    });
     output.send({ out: btoa(string) });
     brackets.reverse();
-    for (bracket of Array.from(brackets)) {
+    brackets.forEach((bracket) => {
       output.send({ out: new noflo.IP('closeBracket', bracket) });
-    }
-    return output.done();
+    });
+    output.done();
   });
 };

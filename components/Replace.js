@@ -1,14 +1,8 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 const noflo = require('noflo');
 
 exports.getComponent = function () {
   const c = new noflo.Component();
-  c.description = 'Given a fixed pattern and its replacement, replace all \
-occurrences in the incoming template.';
+  c.description = 'Given a fixed pattern and its replacement, replace all occurrences in the incoming template.';
 
   c.inPorts.add('in', {
     datatype: 'string',
@@ -45,6 +39,6 @@ occurrences in the incoming template.';
       output.sendDone({ out: data });
       return;
     }
-    return output.sendDone({ out: `${data}`.replace(pattern, replacement) });
+    output.sendDone({ out: `${data}`.replace(pattern, replacement) });
   });
 };

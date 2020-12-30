@@ -1,16 +1,8 @@
-/*
- * decaffeinate suggestions:
- * DS101: Remove unnecessary use of Array.from
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 const noflo = require('noflo');
 
 exports.getComponent = function () {
   const c = new noflo.Component();
-  c.description = ' The SplitStr component receives a string in the in port, \
-splits it by string specified in the delimiter port, and send each part as \
-a separate packet to the out port';
+  c.description = 'The SplitStr component receives a string in the in port, splits it by string specified in the delimiter port, and send each part as a separate packet to the out port';
 
   c.inPorts.add('in', {
     datatype: 'string',
@@ -24,8 +16,7 @@ a separate packet to the out port';
   });
   c.outPorts.add('out', {
     datatype: 'string',
-    description: 'Split off elements from the input \
-string (one element per IP)',
+    description: 'Split off elements from the input string (one element per IP)',
   });
 
   return c.process((input, output) => {
@@ -41,9 +32,9 @@ string (one element per IP)',
 
     const data = input.getData('in');
     const strings = data.split(delimiter);
-    for (const string of Array.from(strings)) {
+    strings.forEach((string) => {
       output.send({ out: string });
-    }
-    return output.done();
+    });
+    output.done();
   });
 };

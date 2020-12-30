@@ -1,36 +1,30 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 describe('Filter component', () => {
   let c = null;
   let pattern = null;
   let ins = null;
   let out = null;
-  before(function (done) {
+  before(function () {
     this.timeout(4000);
     const loader = new noflo.ComponentLoader(baseDir);
-    return loader.load('strings/Filter', (err, instance) => {
-      if (err) { return done(err); }
-      c = instance;
-      pattern = noflo.internalSocket.createSocket();
-      ins = noflo.internalSocket.createSocket();
-      c.inPorts.pattern.attach(pattern);
-      c.inPorts.in.attach(ins);
-      return done();
-    });
+    return loader.load('strings/Filter')
+      .then((instance) => {
+        c = instance;
+        pattern = noflo.internalSocket.createSocket();
+        ins = noflo.internalSocket.createSocket();
+        c.inPorts.pattern.attach(pattern);
+        c.inPorts.in.attach(ins);
+      });
   });
   beforeEach(() => {
     out = noflo.internalSocket.createSocket();
-    return c.outPorts.out.attach(out);
+    c.outPorts.out.attach(out);
   });
   afterEach(() => {
     c.outPorts.out.detach(out);
-    return out = null;
+    out = null;
   });
 
-  return describe('with a given pattern', () => it('should only send unfiltered data IPs', (done) => {
+  describe('with a given pattern', () => it('should only send unfiltered data IPs', (done) => {
     const expected = [
       'abc',
       'a24c',
@@ -38,12 +32,12 @@ describe('Filter component', () => {
     out.on('data', (data) => {
       chai.expect(data).to.eql(expected.shift());
       if (expected.length) { return; }
-      return done();
+      done();
     });
     pattern.send('a.+c');
     ins.send('abc');
     ins.send('125c');
     ins.send('a24c');
-    return ins.disconnect();
+    ins.disconnect();
   }));
 });

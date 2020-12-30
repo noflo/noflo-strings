@@ -1,16 +1,9 @@
-/*
- * decaffeinate suggestions:
- * DS101: Remove unnecessary use of Array.from
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 const noflo = require('noflo');
 const _ = require('underscore');
 
 exports.getComponent = function () {
   const c = new noflo.Component();
-  c.description = 'The inverse of \'Replace\': fix the template and pass in \
-an object of patterns and replacements.';
+  c.description = 'The inverse of \'Replace\': fix the template and pass in an object of patterns and replacements.';
 
   c.inPorts.add('in',
     { datatype: 'object' });
@@ -48,11 +41,12 @@ an object of patterns and replacements.';
       data = input.get('in');
 
       result = template;
-      for (let pattern in data.data) {
+      Object.keys(data.data).forEach((p) => {
+        let pattern = p;
         replacement = data.data[pattern];
         pattern = new RegExp(pattern, 'g');
         result = result.replace(pattern, replacement);
-      }
+      });
 
       // Send immediately
       output.sendDone({ out: result });
@@ -72,22 +66,24 @@ an object of patterns and replacements.';
     const tokens = [];
     while (strings.length < tokenData.length) {
       packet = input.get('in');
-      if (packet.type !== 'data') { continue; }
-      strings.push(packet.data);
+      if (packet.type === 'data') {
+        strings.push(packet.data);
+      }
     }
     while (tokens.length < tokenData.length) {
       packet = input.get('token');
-      if (packet.type !== 'data') { continue; }
-      tokens.push(new RegExp(packet.data, 'g'));
+      if (packet.type === 'data') {
+        tokens.push(new RegExp(packet.data, 'g'));
+      }
     }
 
     result = template;
-    for (const string of Array.from(strings)) {
+    strings.forEach((string) => {
       const token = tokens.shift();
       replacement = _.isString(string) ? string : defaults;
       result = result.replace(token, replacement);
-    }
+    });
 
-    return output.sendDone({ out: result });
+    output.sendDone({ out: result });
   });
 };

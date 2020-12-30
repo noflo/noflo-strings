@@ -1,8 +1,3 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 const noflo = require('noflo');
 const _ = require('underscore');
 
@@ -14,8 +9,7 @@ exports.getComponent = function () {
     { datatype: 'string' });
   c.inPorts.add('match', {
     datatype: 'object',
-    description: 'Dictionary object with key matching \
-the input object and value being the replacement item',
+    description: 'Dictionary object with key matching the input object and value being the replacement item',
     control: true,
     required: true,
   });
@@ -33,10 +27,10 @@ the input object and value being the replacement item',
 
     const matches = {};
     let matchKeys = [];
-    for (const fromMatch in match) {
+    Object.keys(match).forEach((fromMatch) => {
       const toMatch = match[fromMatch];
       matches[fromMatch.toString()] = toMatch.toString();
-    }
+    });
     matchKeys = _.keys(matches);
 
     const matchKeyIndex = matchKeys.indexOf(string.toString());
@@ -45,6 +39,6 @@ the input object and value being the replacement item',
       string = matches[matchKeys[matchKeyIndex]];
     }
 
-    return output.sendDone({ out: string });
+    output.sendDone({ out: string });
   });
 };

@@ -1,10 +1,3 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * DS103: Rewrite code to no longer use __guard__, or convert again using --optional-chaining
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 const noflo = require('noflo');
 
 exports.getComponent = function () {
@@ -42,17 +35,11 @@ exports.getComponent = function () {
     if (typeof data !== 'string') {
       data = (data).toString();
     }
-    if ((regex != null) && (__guardMethod__(data, 'match', (o) => o.match(regex)) != null)) {
+
+    if ((regex != null) && (data.match && data.match(regex))) {
       output.sendDone({ out: data });
       return;
     }
-    return output.sendDone({ missed: data });
+    output.sendDone({ missed: data });
   });
 };
-
-function __guardMethod__(obj, methodName, transform) {
-  if (typeof obj !== 'undefined' && obj !== null && typeof obj[methodName] === 'function') {
-    return transform(obj, methodName);
-  }
-  return undefined;
-}

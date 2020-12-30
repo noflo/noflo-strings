@@ -1,14 +1,8 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 const noflo = require('noflo');
 
 exports.getComponent = function () {
   const c = new noflo.Component();
-  c.description = 'JSONify all incoming, unless a raw flag is set to \
-exclude data packets that are pure strings';
+  c.description = 'JSONify all incoming, unless a raw flag is set to exclude data packets that are pure strings';
 
   c.inPorts.add('in', {
     datatype: 'object',
@@ -55,6 +49,6 @@ exclude data packets that are pure strings';
       return;
     }
 
-    return output.sendDone({ out: JSON.stringify(data) });
+    output.sendDone({ out: JSON.stringify(data) });
   });
 };

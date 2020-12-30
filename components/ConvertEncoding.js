@@ -1,14 +1,8 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 const noflo = require('noflo');
 
 exports.getComponent = function () {
   const c = new noflo.Component();
-  c.description = 'Convert a string or a buffer from one encoding to another. \
-Default from UTF-8 to Base64';
+  c.description = 'Convert a string or a buffer from one encoding to another. Default from UTF-8 to Base64';
 
   c.inPorts.add('in', {
     datatype: 'all',
@@ -44,9 +38,9 @@ Default from UTF-8 to Base64';
     if (data.data instanceof Buffer) {
       result += data.data.toString(from);
     } else if (typeof data.data === 'string') {
-      result += new Buffer(data.data, from).toString();
+      result += Buffer.from(data.data, from).toString();
     }
 
-    return output.sendDone({ out: new Buffer(result).toString(to) });
+    output.sendDone({ out: Buffer.from(result).toString(to) });
   });
 };

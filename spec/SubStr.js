@@ -1,72 +1,66 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 describe('SubStr component', () => {
   let c = null;
   let ins = null;
   let index = null;
   let limit = null;
   let out = null;
-  before(function (done) {
+  before(function () {
     this.timeout(4000);
     const loader = new noflo.ComponentLoader(baseDir);
-    return loader.load('strings/SubStr', (err, instance) => {
-      if (err) { return done(err); }
-      c = instance;
-      ins = noflo.internalSocket.createSocket();
-      c.inPorts.in.attach(ins);
-      index = noflo.internalSocket.createSocket();
-      c.inPorts.index.attach(index);
-      limit = noflo.internalSocket.createSocket();
-      c.inPorts.limit.attach(limit);
-      return done();
-    });
+    return loader.load('strings/SubStr')
+      .then((instance) => {
+        c = instance;
+        ins = noflo.internalSocket.createSocket();
+        c.inPorts.in.attach(ins);
+        index = noflo.internalSocket.createSocket();
+        c.inPorts.index.attach(index);
+        limit = noflo.internalSocket.createSocket();
+        c.inPorts.limit.attach(limit);
+      });
   });
   beforeEach(() => {
     out = noflo.internalSocket.createSocket();
-    return c.outPorts.out.attach(out);
+    c.outPorts.out.attach(out);
   });
   afterEach(() => {
     c.outPorts.out.detach(out);
-    return out = null;
+    out = null;
   });
 
-  return describe('producing a substring', () => {
+  describe('producing a substring', () => {
     it('should send string as-is by default', (done) => {
       out.on('data', (data) => {
         chai.expect(data).to.equal('Hello World');
-        return done();
+        done();
       });
 
       ins.send('Hello World');
-      return ins.disconnect();
+      ins.disconnect();
     });
 
     it('should make a substring by given index', (done) => {
       out.on('data', (data) => {
         chai.expect(data).to.equal('ello World');
-        return done();
+        done();
       });
 
       index.send(1);
 
       ins.send('Hello World');
-      return ins.disconnect();
+      ins.disconnect();
     });
 
-    return it('should make a substring by given index and limit', (done) => {
+    it('should make a substring by given index and limit', (done) => {
       out.on('data', (data) => {
         chai.expect(data).to.equal('ello');
-        return done();
+        done();
       });
 
       index.send(1);
       limit.send(4);
 
       ins.send('Hello World');
-      return ins.disconnect();
+      ins.disconnect();
     });
   });
 });

@@ -1,36 +1,30 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 describe('SendString component', () => {
   let c = null;
   let ins = null;
   let string = null;
   let out = null;
-  before(function (done) {
+  before(function () {
     this.timeout(4000);
     const loader = new noflo.ComponentLoader(baseDir);
-    return loader.load('strings/SendString', (err, instance) => {
-      if (err) { return done(err); }
-      c = instance;
-      ins = noflo.internalSocket.createSocket();
-      c.inPorts.in.attach(ins);
-      string = noflo.internalSocket.createSocket();
-      c.inPorts.string.attach(string);
-      return done();
-    });
+    return loader.load('strings/SendString')
+      .then((instance) => {
+        c = instance;
+        ins = noflo.internalSocket.createSocket();
+        c.inPorts.in.attach(ins);
+        string = noflo.internalSocket.createSocket();
+        c.inPorts.string.attach(string);
+      });
   });
   beforeEach(() => {
     out = noflo.internalSocket.createSocket();
-    return c.outPorts.out.attach(out);
+    c.outPorts.out.attach(out);
   });
   afterEach(() => {
     c.outPorts.out.detach(out);
-    return out = null;
+    out = null;
   });
 
-  return describe('when receiving a bang', () => it('should send the string out with banged brackets', (done) => {
+  describe('when receiving a bang', () => it('should send the string out with banged brackets', (done) => {
     const expected = [
       '< a',
       'DATA Hello There',
@@ -43,7 +37,7 @@ describe('SendString component', () => {
     out.on('endgroup', () => received.push('>'));
     out.on('disconnect', () => {
       chai.expect(received).to.eql(expected);
-      return done();
+      done();
     });
 
     string.send('Hello There');
@@ -51,6 +45,6 @@ describe('SendString component', () => {
     ins.beginGroup('a');
     ins.send(true);
     ins.endGroup();
-    return ins.disconnect();
+    ins.disconnect();
   }));
 });

@@ -1,8 +1,3 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 const noflo = require('noflo');
 
 exports.getComponent = function () {
@@ -13,18 +8,12 @@ exports.getComponent = function () {
     datatype: 'string',
     description: 'JSON description to parse',
   });
-  c.inPorts.add('try', {
-    datatype: 'boolean',
-    description: 'Deprecated',
-  });
   c.outPorts.add('out', {
     datatype: 'object',
     description: 'Parsed object',
   });
   c.outPorts.add('error',
     { datatype: 'object' });
-
-  c.inPorts.try.on('data', (data) => console.warn('ParseJson try port is deprecated'));
 
   return c.process((input, output) => {
     let result;
@@ -39,6 +28,6 @@ exports.getComponent = function () {
       return;
     }
 
-    return output.sendDone({ out: result });
+    output.sendDone({ out: result });
   });
 };

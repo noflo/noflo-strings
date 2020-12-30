@@ -1,8 +1,3 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 const noflo = require('noflo');
 const _ = require('underscore');
 
@@ -30,6 +25,6 @@ exports.getComponent = function () {
     if (data.type !== 'data') { return; }
 
     const template = _.template(input.getData('template'));
-    return output.sendDone({ out: template(data.data) });
+    output.sendDone({ out: template(data.data) });
   });
 };

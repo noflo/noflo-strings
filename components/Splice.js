@@ -1,8 +1,3 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 const noflo = require('noflo');
 const _ = require('underscore');
 
@@ -38,8 +33,9 @@ exports.getComponent = function () {
     let strings = [];
     while (strings.length !== 2) {
       const packet = input.get('in');
-      if (packet.type !== 'data') { continue; }
-      strings.push(packet.data);
+      if (packet.type === 'data') {
+        strings.push(packet.data);
+      }
     }
 
     const assoc = input.has('assoc') ? input.getData('assoc') : ':';
@@ -47,6 +43,6 @@ exports.getComponent = function () {
 
     const paired = _.zip(strings[0], strings[1]);
     strings = _.map(paired, ((pair) => pair.join(assoc)));
-    return output.sendDone({ out: strings.join(delim) });
+    output.sendDone({ out: strings.join(delim) });
   });
 };

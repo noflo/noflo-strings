@@ -1,8 +1,3 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 const noflo = require('noflo');
 
 exports.getComponent = function () {
@@ -29,6 +24,6 @@ exports.getComponent = function () {
 
     const base = input.has('base') ? input.getData('base') : 10;
 
-    return output.sendDone({ out: parseInt(data, base) });
+    output.sendDone({ out: parseInt(data, base) });
   });
 };

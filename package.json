@@ -30,7 +30,7 @@
   "dependencies": {
     "btoa": "~1.2.1",
     "noflo": "^1.0.0",
-    "sift3": "0.0.1",
+    "sift-string": "0.0.2",
     "underscore": "~1.9.0"
   },
   "devDependencies": {

@@ -1,5 +1,5 @@
 const noflo = require('noflo');
-const sift3 = require('sift3');
+const sift3 = require('sift-string');
 
 exports.getComponent = function () {
   const c = new noflo.Component();

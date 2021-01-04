@@ -1,5 +1,7 @@
 const noflo = require('noflo');
 
+// @runtime noflo-nodejs
+
 exports.getComponent = function () {
   const c = new noflo.Component();
   c.description = 'Convert a string or a buffer from one encoding to another. Default from UTF-8 to Base64';

@@ -7,7 +7,7 @@ describe('ConvertEncoding component', () => {
   before(function () {
     if (noflo.isBrowser()) {
       this.skip();
-      return;
+      return Promise.resolve();
     }
     this.timeout(4000);
     const loader = new noflo.ComponentLoader(baseDir);

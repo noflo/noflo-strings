@@ -31,7 +31,7 @@
     "btoa": "~1.2.1",
     "noflo": "^1.0.0",
     "sift-string": "0.0.2",
-    "underscore": "~1.12.0"
+    "underscore": "~1.13.6"
   },
   "devDependencies": {
     "chai": "^4.2.0",

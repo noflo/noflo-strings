@@ -1,4 +1,5 @@
 const noflo = require('noflo');
+
 exports.getComponent = () => {
   const c = new noflo.Component();
   c.inPorts.add('in', {

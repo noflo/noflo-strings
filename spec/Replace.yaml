@@ -1,0 +1,35 @@
+topic: strings/Replace
+cases:
+  - name: simple replacement
+    assertion: should replace all occurrences
+    inputs:
+      pattern: abc
+      replacement: xyz
+      in: abc123abc
+    expect:
+      out:
+        equals: xyz123xyz
+  - name: no pattern
+    assertion: should pass the string through unchanged
+    inputs:
+      in: abc123
+    expect:
+      out:
+        equals: abc123
+  - name: no replacement
+    assertion: should remove the pattern
+    inputs:
+      pattern: abc
+      in: abc123abc
+    expect:
+      out:
+        equals: "123"
+  - name: empty string input
+    assertion: should treat empty string as valid data
+    inputs:
+      pattern: abc
+      replacement: xyz
+      in: ""
+    expect:
+      out:
+        equals: ""

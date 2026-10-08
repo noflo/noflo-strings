@@ -1,0 +1,10 @@
+topic: strings/Append
+cases:
+  - name: appending
+    assertion: should append the string
+    inputs:
+      append: world
+      in: hello
+    expect:
+      out:
+        equals: helloworld

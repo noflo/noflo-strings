@@ -1,89 +1,147 @@
-const noflo = require('noflo');
-const _ = require('underscore');
+import { Component } from "@noflo/noflo";
 
-exports.getComponent = function () {
-  const c = new noflo.Component();
-  c.description = 'The inverse of \'Replace\': fix the template and pass in an object of patterns and replacements.';
-
-  c.inPorts.add('in',
-    { datatype: 'object' });
-  c.inPorts.add('token',
-    { datatype: 'string' });
-  c.inPorts.add('template', {
-    datatype: 'string',
-    control: true,
+/**
+ * The inverse of Replace: fix the template and pass in an object of
+ * patterns and replacements, or a token stream with matching strings.
+ *
+ * 2.x conversion notes: 1.x `port.scopedBuffer` internals are replaced
+ * by `InPort.getBuffer(scope)`, `autoOrdering` is set once at
+ * construction, and underscore type checks are native. All `hasData`
+ * precondition checks (including the buffered token count) run before
+ * any `getData` call — reading a port while an activation is still
+ * waiting for more data prevents that activation from ever re-invoking.
+ * @returns {import("@noflo/noflo").Component} The configured component
+ */
+export function getComponent() {
+  const c = new Component({
+    description:
+      "The inverse of Replace: fix the template and pass in an object of patterns and replacements",
+    inPorts: {
+      in: {
+        datatype: "all",
+        description:
+          "Map of replacements, or replacement strings matching the tokens",
+        required: true,
+      },
+      token: {
+        datatype: "string",
+        description: "Regexp tokens to replace, in the stream mode",
+      },
+      template: {
+        datatype: "string",
+        description: "Template to fill in",
+        control: true,
+        required: true,
+      },
+      default: {
+        datatype: "string",
+        description: "Default value for non-string replacements",
+        control: true,
+      },
+    },
+    outPorts: {
+      out: {
+        datatype: "string",
+      },
+      error: {
+        datatype: "object",
+        description: "Invalid regular expression errors",
+      },
+    },
   });
-  // Default value for non-string input
-  c.inPorts.add('default', {
-    datatype: 'string',
-    control: true,
-  });
-  c.outPorts.add('out',
-    { datatype: 'string' });
 
-  return c.process((input, output) => {
-    let data; let packet; let replacement; let
-      result;
-    if (!input.has('template', 'in')) { return; }
+  c.autoOrdering = false;
 
-    const template = input.getData('template');
-    if (!_.isString(template)) { return; }
+  /**
+   * @param {import("@noflo/noflo").IP} ip
+   * @returns {boolean}
+   */
+  const isData = (ip) => ip.type === "data";
 
-    const defaults = input.has('default') ? input.getData('default') : '';
+  c.process((input, output) => {
+    // Preconditions first: every hasData check runs before any getData
+    if (!input.hasData("template", "in")) {
+      return;
+    }
 
-    const inputPort = c.inPorts.in;
-    const inputBuf = input.scope ? inputPort.scopedBuffer[input.scope] : inputPort.buffer;
-    const inputData = inputBuf.filter((ip) => ip.type === 'data');
-    if (!inputData.length) { return; }
+    const inputBuffer = c.inPorts.in.getBuffer(input.scope);
+    const inputData = inputBuffer.filter(isData);
+    if (!inputData.length) {
+      return;
+    }
 
-    // Accept a map of replacements
-    if (_.isObject(inputData[0].data)) {
-      data = input.get('in');
+    const tokenBuffer = c.inPorts.token.getBuffer(input.scope);
+    const tokenData = tokenBuffer.filter(isData);
 
-      result = template;
-      Object.keys(data.data).forEach((p) => {
-        let pattern = p;
-        replacement = data.data[pattern];
-        pattern = new RegExp(pattern, 'g');
-        result = result.replace(pattern, replacement);
-      });
+    // Decide the mode from the buffered data before reading anything
+    const first = inputData[0].data;
+    const isMap = first !== null && typeof first === "object";
+    const isStream = !isMap && tokenData.length > 0;
+    if (isStream && inputData.length < tokenData.length) {
+      return;
+    }
+    if (!isMap && !isStream) {
+      return;
+    }
 
-      // Send immediately
+    // Firing pattern confirmed; only now read the values
+    const template = input.getData("template");
+    if (typeof template !== "string") {
+      return;
+    }
+    const defaults = input.hasData("default") ? input.getData("default") : "";
+
+    if (isMap) {
+      const data = input.getData("in");
+      let result = template;
+      for (const pattern of Object.keys(data)) {
+        let regex;
+        try {
+          regex = new RegExp(pattern, "g");
+        } catch (err) {
+          output.done(err instanceof Error ? err : new Error(String(err)));
+          return;
+        }
+        result = result.replace(regex, data[pattern]);
+      }
       output.sendDone({ out: result });
       return;
     }
 
-    // Also accept a series of IPs
-    c.autoOrdering = false;
-    const tokenPort = c.inPorts.token;
-    const tokenBuf = input.scope ? tokenPort.scopedBuffer[input.scope] : tokenPort.buffer;
-    const tokenData = tokenBuf.filter((ip) => ip.type === 'data');
-    // There must be tokens
-    if (!tokenData.length) { return; }
-    if (inputData.length < tokenData.length) { return; }
-
+    // Stream mode: replacement strings matching the tokens
     const strings = [];
     const tokens = [];
     while (strings.length < tokenData.length) {
-      packet = input.get('in');
-      if (packet.type === 'data') {
+      const packet = /** @type {import("@noflo/noflo").IP} */ (input.get("in"));
+      if (packet.type === "data") {
         strings.push(packet.data);
       }
     }
     while (tokens.length < tokenData.length) {
-      packet = input.get('token');
-      if (packet.type === 'data') {
-        tokens.push(new RegExp(packet.data, 'g'));
+      const packet = /** @type {import("@noflo/noflo").IP} */ (
+        input.get("token")
+      );
+      if (packet.type === "data") {
+        try {
+          tokens.push(new RegExp(packet.data, "g"));
+        } catch (err) {
+          output.done(err instanceof Error ? err : new Error(String(err)));
+          return;
+        }
       }
     }
 
-    result = template;
-    strings.forEach((string) => {
+    let result = template;
+    for (const string of strings) {
       const token = tokens.shift();
-      replacement = _.isString(string) ? string : defaults;
+      if (token === undefined) {
+        break;
+      }
+      const replacement = typeof string === "string" ? string : defaults;
       result = result.replace(token, replacement);
-    });
-
+    }
     output.sendDone({ out: result });
   });
-};
+
+  return c;
+}

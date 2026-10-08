@@ -1,0 +1,18 @@
+topic: strings/Sift3Distance
+cases:
+  - name: identical strings
+    assertion: should return zero distance
+    inputs:
+      string1: hello
+      string2: hello
+    expect:
+      out:
+        equals: 0
+  - name: different lengths
+    assertion: should compute the distance
+    inputs:
+      string1: ""
+      string2: abc
+    expect:
+      out:
+        equals: 3

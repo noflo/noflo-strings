@@ -1,0 +1,21 @@
+topic: strings/MatchReplace
+cases:
+  - name: dictionary hit
+    assertion: should replace with the dictionary value
+    inputs:
+      match:
+        foo: bar
+        hello: world
+      in: hello
+    expect:
+      out:
+        equals: world
+  - name: dictionary miss
+    assertion: should pass the string through
+    inputs:
+      match:
+        foo: bar
+      in: unknown
+    expect:
+      out:
+        equals: unknown

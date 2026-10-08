@@ -1,17 +1,33 @@
-const noflo = require('noflo');
+import { Component } from "@noflo/noflo";
 
-exports.getComponent = function () {
-  const c = new noflo.Component();
-  c.description = 'Convert the input into a string using toString()';
+/**
+ * Converts the incoming value to a string.
+ * @returns {import("@noflo/noflo").Component} The configured component
+ */
+export function getComponent() {
+  const c = new Component({
+    description: "Convert a value to a string",
+    inPorts: {
+      in: {
+        datatype: "all",
+        description: "Value to convert",
+        required: true,
+      },
+    },
+    outPorts: {
+      out: {
+        datatype: "string",
+      },
+    },
+  });
 
-  c.inPorts.add('in',
-    { datatype: 'all' });
-
-  c.outPorts.add('out',
-    { datatype: 'string' });
-
-  return c.process((input, output) => {
-    const data = input.getData('in');
+  c.process((input, output) => {
+    if (!input.hasData("in")) {
+      return;
+    }
+    const data = input.getData("in");
     output.sendDone({ out: data.toString() });
   });
-};
+
+  return c;
+}

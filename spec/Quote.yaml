@@ -1,0 +1,9 @@
+topic: strings/Quote
+cases:
+  - name: quoting
+    assertion: should wrap in single quotes
+    inputs:
+      in: hello
+    expect:
+      out:
+        equals: "'hello'"

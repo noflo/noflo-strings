@@ -1,44 +1,57 @@
-const noflo = require('noflo');
-const _ = require('underscore');
+import { Component } from "@noflo/noflo";
 
-exports.getComponent = function () {
-  const c = new noflo.Component();
-  c.description = 'Replace string packets using a dictionary';
-
-  c.inPorts.add('in',
-    { datatype: 'string' });
-  c.inPorts.add('match', {
-    datatype: 'object',
-    description: 'Dictionary object with key matching the input object and value being the replacement item',
-    control: true,
-    required: true,
+/**
+ * Replaces string packets using a dictionary.
+ * @returns {import("@noflo/noflo").Component} The configured component
+ */
+export function getComponent() {
+  const c = new Component({
+    description: "Replace string packets using a dictionary",
+    inPorts: {
+      in: {
+        datatype: "string",
+        description: "String to match against the dictionary keys",
+        required: true,
+      },
+      match: {
+        datatype: "object",
+        description:
+          "Dictionary object with key matching the input object and value being the replacement item",
+        control: true,
+        required: true,
+      },
+    },
+    outPorts: {
+      out: {
+        datatype: "string",
+      },
+    },
   });
-  c.outPorts.add('out',
-    { datatype: 'string' });
 
-  return c.process((input, output) => {
-    if (!input.has('in', 'match')) { return; }
-    const match = input.getData('match');
-    if (!match) { return; }
-    if (!_.isObject(match)) { return; }
+  c.process((input, output) => {
+    if (!input.hasData("in", "match")) {
+      return;
+    }
+    const match = input.getData("match");
+    if (match === null || typeof match !== "object") {
+      return;
+    }
+    const string = input.getData("in");
 
-    let string = input.getData('in');
-    if (!string) { return; }
-
+    /** @type {Record<string, string>} */
     const matches = {};
-    let matchKeys = [];
-    Object.keys(match).forEach((fromMatch) => {
-      const toMatch = match[fromMatch];
-      matches[fromMatch.toString()] = toMatch.toString();
-    });
-    matchKeys = _.keys(matches);
+    for (const fromMatch of Object.keys(match)) {
+      matches[fromMatch.toString()] = match[fromMatch].toString();
+    }
+    const matchKeys = Object.keys(matches);
 
     const matchKeyIndex = matchKeys.indexOf(string.toString());
-
     if (matchKeyIndex > -1) {
-      string = matches[matchKeys[matchKeyIndex]];
+      output.sendDone({ out: matches[matchKeys[matchKeyIndex]] });
+      return;
     }
-
     output.sendDone({ out: string });
   });
-};
+
+  return c;
+}

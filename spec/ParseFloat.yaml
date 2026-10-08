@@ -1,0 +1,16 @@
+topic: strings/ParseFloat
+cases:
+  - name: parsing a float
+    assertion: should parse the number
+    inputs:
+      in: "3.14"
+    expect:
+      out:
+        equals: 3.14
+  - name: parsing an invalid number
+    assertion: should produce NaN
+    inputs:
+      in: nope
+    expect:
+      out:
+        type: number

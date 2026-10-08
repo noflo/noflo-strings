@@ -1,0 +1,11 @@
+topic: strings/SendJson
+cases:
+  - name: sending parsed JSON
+    assertion: should parse the configured JSON string on bang
+    inputs:
+      json: '{"hello":"world"}'
+      in: true
+    expect:
+      out:
+        equals:
+          hello: world

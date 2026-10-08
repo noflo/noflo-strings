@@ -1,22 +1,33 @@
-const noflo = require('noflo');
+import { Component } from "@noflo/noflo";
 
-exports.getComponent = function () {
-  const c = new noflo.Component();
-  c.description = 'toLowerCase on all incoming IPs (assuming they are strings)';
-
-  c.inPorts.add('in', {
-    datatype: 'string',
-    description: 'Mixed-case string',
+/**
+ * Lowercases the incoming string.
+ * @returns {import("@noflo/noflo").Component} The configured component
+ */
+export function getComponent() {
+  const c = new Component({
+    description: "Convert the case of a string to lowercase",
+    inPorts: {
+      in: {
+        datatype: "string",
+        description: "String to convert",
+        required: true,
+      },
+    },
+    outPorts: {
+      out: {
+        datatype: "string",
+      },
+    },
   });
-  c.outPorts.add('out', {
-    datatype: 'string',
-    description: 'All-lowercase string',
-  });
 
-  return c.process((input, output) => {
-    const data = input.getData('in');
-    if (!data) { return; }
-
+  c.process((input, output) => {
+    if (!input.hasData("in")) {
+      return;
+    }
+    const data = input.getData("in");
     output.sendDone({ out: data.toLowerCase() });
   });
-};
+
+  return c;
+}

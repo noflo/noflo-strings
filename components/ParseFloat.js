@@ -1,19 +1,33 @@
-const noflo = require('noflo');
+import { Component } from "@noflo/noflo";
 
-exports.getComponent = function () {
-  const c = new noflo.Component();
-  c.description = 'Parse a string to a float';
-  c.inPorts.add('in', {
-    datatype: 'string',
-    description: 'String to parse as Float representation',
-  });
-  c.outPorts.add('out', {
-    datatype: 'number',
-    description: 'Parsed number',
+/**
+ * Parses a string to a float.
+ * @returns {import("@noflo/noflo").Component} The configured component
+ */
+export function getComponent() {
+  const c = new Component({
+    description: "Parses a string to a float",
+    inPorts: {
+      in: {
+        datatype: "string",
+        description: "String to parse",
+        required: true,
+      },
+    },
+    outPorts: {
+      out: {
+        datatype: "number",
+      },
+    },
   });
 
-  return c.process((input, output) => {
-    const data = input.getData('in');
-    output.sendDone({ out: parseFloat(data) });
+  c.process((input, output) => {
+    if (!input.hasData("in")) {
+      return;
+    }
+    const data = input.getData("in");
+    output.sendDone({ out: Number.parseFloat(data) });
   });
-};
+
+  return c;
+}

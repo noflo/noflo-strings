@@ -1,0 +1,27 @@
+topic: strings/Jsonify
+cases:
+  - name: serializing an object
+    assertion: should produce JSON
+    inputs:
+      in:
+        hello: world
+    expect:
+      out:
+        equals: '{"hello":"world"}'
+  - name: raw mode passes strings through
+    assertion: should not serialize plain strings
+    inputs:
+      raw: "true"
+      in: already a string
+    expect:
+      out:
+        equals: already a string
+  - name: pretty mode
+    assertion: should indent the JSON
+    inputs:
+      pretty: "true"
+      in:
+        a: 1
+    expect:
+      out:
+        equals: "{\n    \"a\": 1\n}"

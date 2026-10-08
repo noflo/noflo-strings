@@ -1,0 +1,17 @@
+topic: strings/ParseInt
+cases:
+  - name: parsing base 10
+    assertion: should parse the integer
+    inputs:
+      in: "42"
+    expect:
+      out:
+        equals: 42
+  - name: parsing base 16
+    assertion: should honor the base
+    inputs:
+      base: 16
+      in: "ff"
+    expect:
+      out:
+        equals: 255

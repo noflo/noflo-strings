@@ -1,0 +1,10 @@
+topic: strings/SendString
+cases:
+  - name: sending a configured string
+    assertion: should send the string on bang
+    inputs:
+      string: hello world
+      in: true
+    expect:
+      out:
+        equals: hello world

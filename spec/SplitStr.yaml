@@ -1,0 +1,26 @@
+topic: strings/SplitStr
+cases:
+  - name: splitting on a delimiter
+    assertion: should emit one packet per part
+    inputs:
+      delimiter: ","
+      in: "a,b,c"
+    expect:
+      out:
+        equals: c
+  - name: regex delimiter
+    assertion: should support /regex/ form
+    inputs:
+      delimiter: "/[0-9]+/"
+      in: a1b2c
+    expect:
+      out:
+        equals: c
+  - name: default newline delimiter
+    assertion: should split on newlines by default
+    inputs:
+      in: "first
+second"
+    expect:
+      out:
+        equals: second

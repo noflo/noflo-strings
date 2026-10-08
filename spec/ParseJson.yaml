@@ -1,0 +1,17 @@
+topic: strings/ParseJson
+cases:
+  - name: parsing an object
+    assertion: should parse the JSON
+    inputs:
+      in: '{"hello":"world"}'
+    expect:
+      out:
+        equals:
+          hello: world
+  - name: parsing invalid JSON
+    assertion: should send an error
+    inputs:
+      in: "{invalid"
+    expect:
+      error:
+        type: object

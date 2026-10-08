@@ -1,0 +1,37 @@
+topic: strings/SubStr
+cases:
+  - name: substring from index
+    assertion: should cut at the index
+    inputs:
+      index: 2
+      in: hello world
+    expect:
+      out:
+        equals: llo world
+  - name: substring with limit
+    assertion: should honor the limit
+    inputs:
+      index: 0
+      limit: 5
+      in: hello world
+    expect:
+      out:
+        equals: hello
+topic: strings/ToString
+cases:
+  - name: converting a number
+    assertion: should stringify
+    inputs:
+      in: 42
+    expect:
+      out:
+        equals: "42"
+topic: strings/ConvertEncoding
+cases:
+  - name: utf8 to base64
+    assertion: should convert encodings
+    inputs:
+      in: hello
+    expect:
+      out:
+        equals: aGVsbG8=

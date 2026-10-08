@@ -1,44 +1,67 @@
-const noflo = require('noflo');
+import { Component } from "@noflo/noflo";
 
-exports.getComponent = function () {
-  const c = new noflo.Component();
-  c.description = 'Given a fixed pattern and its replacement, replace all occurrences in the incoming template.';
-
-  c.inPorts.add('in', {
-    datatype: 'string',
-    description: 'String to replace pattern in',
+/**
+ * Replaces all occurrences of a pattern in the incoming string.
+ *
+ * This is the migration protocol's worked example (§6.1): dead-branch
+ * removal, error routing for invalid regexps, `hasData` guards.
+ * @returns {import("@noflo/noflo").Component} The configured component
+ */
+export function getComponent() {
+  const c = new Component({
+    description:
+      "Given a fixed pattern and its replacement, replace all occurrences in the incoming string",
+    inPorts: {
+      in: {
+        datatype: "string",
+        description: "String to replace pattern in",
+        required: true,
+      },
+      pattern: {
+        datatype: "string",
+        description: "Pattern to replace",
+        control: true,
+      },
+      replacement: {
+        datatype: "string",
+        description: "Replacement for the pattern",
+        control: true,
+        default: "",
+      },
+    },
+    outPorts: {
+      out: {
+        datatype: "string",
+      },
+      error: {
+        datatype: "object",
+        description: "Invalid regular expression errors",
+      },
+    },
   });
-  c.inPorts.add('pattern', {
-    datatype: 'string',
-    description: 'Pattern to replace',
-    control: true,
-  });
-  c.inPorts.add('replacement', {
-    datatype: 'string',
-    description: 'Replacement for the pattern',
-    control: true,
-  });
-  c.outPorts.add('out',
-    { datatype: 'string' });
 
-  return c.process((input, output) => {
-    let pattern;
-    if (!input.has('in')) { return; }
-
-    if (input.has('pattern')) {
-      pattern = new RegExp(input.getData('pattern'), 'g');
+  c.process((input, output) => {
+    if (!input.hasData("in")) {
+      return;
     }
-    let replacement = '';
-    if (input.has('replacement')) {
-      replacement = input.getData('replacement').replace('\\\\n', '\n');
-    }
-
-    const data = input.getData('in');
-    if (!data) { return; }
-    if (!pattern) {
+    const data = input.getData("in");
+    if (!input.hasData("pattern")) {
+      // No pattern received: pass through unchanged
       output.sendDone({ out: data });
       return;
     }
-    output.sendDone({ out: `${data}`.replace(pattern, replacement) });
+    const replacement = input.hasData("replacement")
+      ? input.getData("replacement").replace("\\\\n", "\n")
+      : "";
+    let regex;
+    try {
+      regex = new RegExp(input.getData("pattern"), "g");
+    } catch (err) {
+      output.done(err instanceof Error ? err : new Error(String(err)));
+      return;
+    }
+    output.sendDone({ out: data.replace(regex, replacement) });
   });
-};
+
+  return c;
+}

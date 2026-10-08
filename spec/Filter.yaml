@@ -1,0 +1,18 @@
+topic: strings/Filter
+cases:
+  - name: passing string
+    assertion: should send to out
+    inputs:
+      pattern: "^[a-z]+$"
+      in: hello
+    expect:
+      out:
+        equals: hello
+  - name: failing string
+    assertion: should send to missed
+    inputs:
+      pattern: "^[a-z]+$"
+      in: hello1
+    expect:
+      missed:
+        equals: hello1

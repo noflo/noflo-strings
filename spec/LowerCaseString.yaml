@@ -1,0 +1,9 @@
+topic: strings/LowerCaseString
+cases:
+  - name: lowercasing
+    assertion: should lowercase the string
+    inputs:
+      in: HeLLo
+    expect:
+      out:
+        equals: hello

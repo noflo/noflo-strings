@@ -1,0 +1,9 @@
+topic: strings/EscapeQuotes
+cases:
+  - name: escaping quotes
+    assertion: should escape double quotes
+    inputs:
+      in: 'say "hi"'
+    expect:
+      out:
+        equals: 'say \"hi\"'

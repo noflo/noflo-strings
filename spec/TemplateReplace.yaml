@@ -1,0 +1,12 @@
+topic: strings/TemplateReplace
+cases:
+  - name: map of replacements
+    assertion: should replace all patterns
+    inputs:
+      template: "Hello %name%, welcome to %place%"
+      in:
+        "%name%": world
+        "%place%": NoFlo
+    expect:
+      out:
+        equals: Hello world, welcome to NoFlo

@@ -1,0 +1,29 @@
+topic: strings/StringTemplate
+cases:
+  - name: interpolation
+    assertion: should interpolate values
+    inputs:
+      template: "Hello <%= name %>!"
+      in:
+        name: world
+    expect:
+      out:
+        equals: Hello world!
+  - name: escaped interpolation
+    assertion: should HTML-escape with <%- %>
+    inputs:
+      template: "Hello <%- name %>!"
+      in:
+        name: "<world>"
+    expect:
+      out:
+        equals: Hello &lt;world&gt;!
+  - name: evaluated code
+    assertion: should run <% %> blocks
+    inputs:
+      template: "<% if (ready) { %>yes<% } else { %>no<% } %>"
+      in:
+        ready: true
+    expect:
+      out:
+        equals: yes

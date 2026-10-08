@@ -1,48 +1,61 @@
-const noflo = require('noflo');
+import { Buffer } from "node:buffer";
 
-// @runtime noflo-nodejs
+import { Component } from "@noflo/noflo";
 
-exports.getComponent = function () {
-  const c = new noflo.Component();
-  c.description = 'Convert a string or a buffer from one encoding to another. Default from UTF-8 to Base64';
-
-  c.inPorts.add('in', {
-    datatype: 'all',
-    description: 'Buffer or string to be converted',
+/**
+ * Converts a string or a buffer from one encoding to another. Defaults
+ * to UTF-8 to Base64. Node-only by nature (Buffer and encodings).
+ * @returns {import("@noflo/noflo").Component} The configured component
+ */
+export function getComponent() {
+  const c = new Component({
+    description:
+      "Convert a string or a buffer from one encoding to another. Default from UTF-8 to Base64",
+    inPorts: {
+      in: {
+        datatype: "all",
+        description: "Buffer or string to be converted",
+        required: true,
+      },
+      from: {
+        datatype: "string",
+        description: "Input encoding",
+        default: "utf8",
+        control: true,
+      },
+      to: {
+        datatype: "string",
+        description: "Output encoding",
+        default: "base64",
+        control: true,
+      },
+    },
+    outPorts: {
+      out: {
+        datatype: "string",
+        description: "Converted string",
+      },
+    },
   });
-  c.inPorts.add('from', {
-    datatype: 'string',
-    description: 'Input encoding',
-    default: 'utf8',
-    control: true,
-  });
-  c.inPorts.add('to', {
-    datatype: 'string',
-    description: 'Output encoding',
-    default: 'base64',
-    control: true,
-  });
-  c.outPorts.add('out', {
-    datatype: 'string',
-    description: 'Converted string',
-  });
 
-  return c.process((input, output) => {
-    if (!input.has('in')) { return; }
-
-    const from = input.has('from') ? input.getData('from') : 'utf8';
-    const to = input.has('to') ? input.getData('to') : 'base64';
-
-    const data = input.get('in');
-    if (data.type !== 'data') { return; }
-
-    let result = '';
-    if (data.data instanceof Buffer) {
-      result += data.data.toString(from);
-    } else if (typeof data.data === 'string') {
-      result += Buffer.from(data.data, from).toString();
+  c.process((input, output) => {
+    if (!input.hasData("in")) {
+      return;
     }
+    const from = input.hasData("from") ? input.getData("from") : "utf8";
+    const to = input.hasData("to") ? input.getData("to") : "base64";
+    const data = input.getData("in");
 
-    output.sendDone({ out: Buffer.from(result).toString(to) });
+    let result = "";
+    if (data instanceof Uint8Array) {
+      result += Buffer.from(data).toString(/** @type {any} */ (from));
+    } else if (typeof data === "string") {
+      result += Buffer.from(data, /** @type {any} */ (from)).toString();
+    }
+    output.sendDone({
+      out: Buffer.from(result).toString(/** @type {any} */ (to)),
+    });
   });
-};
+
+  return c;
+}

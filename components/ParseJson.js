@@ -1,33 +1,44 @@
-const noflo = require('noflo');
+import { Component } from "@noflo/noflo";
 
-exports.getComponent = function () {
-  const c = new noflo.Component();
-  c.description = 'Parse a JSON string';
-
-  c.inPorts.add('in', {
-    datatype: 'string',
-    description: 'JSON description to parse',
+/**
+ * Parses a JSON string into a JavaScript value.
+ * @returns {import("@noflo/noflo").Component} The configured component
+ */
+export function getComponent() {
+  const c = new Component({
+    description: "Parse JSON to an object",
+    inPorts: {
+      in: {
+        datatype: "string",
+        description: "JSON source",
+        required: true,
+      },
+    },
+    outPorts: {
+      out: {
+        datatype: "object",
+      },
+      error: {
+        datatype: "object",
+        description: "JSON parse errors",
+      },
+    },
   });
-  c.outPorts.add('out', {
-    datatype: 'object',
-    description: 'Parsed object',
-  });
-  c.outPorts.add('error',
-    { datatype: 'object' });
 
-  return c.process((input, output) => {
-    let result;
-    if (!input.has('in')) { return; }
-    const data = input.getData('in');
-    if (!data) { return; }
-
-    try {
-      result = JSON.parse(data);
-    } catch (e) {
-      output.sendDone(e);
+  c.process((input, output) => {
+    if (!input.hasData("in")) {
       return;
     }
-
+    const data = input.getData("in");
+    let result;
+    try {
+      result = JSON.parse(data);
+    } catch (err) {
+      output.done(err instanceof Error ? err : new Error(String(err)));
+      return;
+    }
     output.sendDone({ out: result });
   });
-};
+
+  return c;
+}

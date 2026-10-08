@@ -130,7 +130,7 @@ const compile = (templateText) => {
   // the with-statement is allowed inside ESM sources
   source = `with(obj||{}){\n${source}\n}\n`;
   source = `var __t,__p='';var __j=Array.prototype.join;function print(){__p+=__j.call(arguments,'');}\n${source}return __p;\n`;
-    const render = new Function("obj", "escapeHtml", "_", source);
+  const render = new Function("obj", "escapeHtml", "_", source);
   return (data) => render(data ?? {}, escapeHtml, templateHelpers);
 };
 

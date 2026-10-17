@@ -1,7 +1,7 @@
 {
   "name": "@noflo/strings",
   "description": "String Utilities for NoFlo",
-  "version": "2.0.0-alpha.1",
+  "version": "2.0.0-alpha.2",
   "keywords": [
     "noflo",
     "strings",
@@ -18,7 +18,7 @@
       "email": "ryanshaw@unc.edu"
     },
     {
-      "name": "Paul M\u00f6lders",
+      "name": "Paul Mölders",
       "email": "paulmoelders@gmail.com"
     }
   ],

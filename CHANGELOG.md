@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [2.0.0-alpha.2] - 2026-10-18
+
 ### Changed
 
 - Every control port is declared `scoped: false`: the library's control ports are standing configuration (patterns, delimiters, templates, suffixes, encodings), and under the gate model (noflo 2.0.0-alpha.10, work document #47) an unscoped standing control value must stay readable from scoped activations. Previously an unscoped control IP on the default `scoped: true` control port warned and was unreadable at any scope holding scoped data — standing configuration arriving for a scoped stream silently failed.

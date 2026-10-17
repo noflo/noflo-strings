@@ -4,7 +4,15 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## Unreleased
+
+### Changed
+
+- `TemplateReplace`'s stream mode requires the token stream to be a bracket-framed stream: the render fires when the frame completes and one replacement string per framed token has arrived. The previous count-based pairing of two bare streams depended on the cross-connection arrival interleave — connections deliver independently, and a bare token IP is a complete single-token stream on its own, so an unframed buffer cannot express "more tokens are coming" — and rendered intermediate states as final ones under one interleave (the flaky `replaces tokens from a token stream` failure on the alpha.2 CI). With the frame, the render is a function of the buffered state alone: the framing-aware `hasStream` validator counts the framed tokens, a later string arrival re-fires the incomplete render, and the result is identical regardless of which connection delivers first (work document #47: no arrival-order guarantee across connections).
+
+### Added
+
+- Spec coverage for the framing contract: the strings stream arriving before the framed token stream renders identically to the natural order.
 
 ## [2.0.0-alpha.2] - 2026-10-18
 

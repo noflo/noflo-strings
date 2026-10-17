@@ -218,11 +218,17 @@ describe("TemplateReplace component", () => {
     c.inPorts.template.attach(templateSocket);
     c.outPorts.out.attach(outSocket);
     try {
+      // The token stream is a framed stream: the frame marks the token
+      // list complete, so the render is order-independent regardless of
+      // how the token and string connections interleave (work document
+      // #47: no arrival-order guarantee across connections)
       templateSocket.post(new noflo.IP("data", "Hello %name% and %other%"));
+      tokenSocket.post(new noflo.IP("openBracket", "tokens"));
       tokenSocket.post(new noflo.IP("data", "%name%"));
       tokenSocket.post(new noflo.IP("data", "%other%"));
+      tokenSocket.post(new noflo.IP("closeBracket", "tokens"));
       const outIp = waitUntil(outSocket, (ip) => ip.type === "data");
-      // Two in values are needed; the first arrives with the template
+      // Two in values are needed; they arrive after the framed tokens
       inSocket.post(new noflo.IP("data", "world"));
       inSocket.post(new noflo.IP("data", "NoFlo"));
       const ip = await outIp;
@@ -286,6 +292,38 @@ describe("Standing configuration under the gate model", () => {
       // The control port is non-consuming: the standing value survives
       // both activations in the buffer
       assert.equal(c.inPorts.append.getBuffer(null).length, 1);
+    } finally {
+      await c.shutdown();
+    }
+  });
+
+  it("renders the same result regardless of stream arrival order", async () => {
+    // The strings arrive before the framed tokens — the reverse of the
+    // natural order — and the render must be identical (work document
+    // #47: activation results are functions of the buffered state)
+    const c = getTemplateReplace();
+    const inSocket = noflo.internalSocket.createSocket();
+    const tokenSocket = noflo.internalSocket.createSocket();
+    const templateSocket = noflo.internalSocket.createSocket();
+    const outSocket = noflo.internalSocket.createSocket();
+    c.inPorts.in.attach(inSocket);
+    c.inPorts.token.attach(tokenSocket);
+    c.inPorts.template.attach(templateSocket);
+    c.outPorts.out.attach(outSocket);
+    const outIps = collect(outSocket);
+    try {
+      templateSocket.post(new noflo.IP("data", "Hello %name% and %other%"));
+      inSocket.post(new noflo.IP("data", "world"));
+      inSocket.post(new noflo.IP("data", "NoFlo"));
+      await new Promise((resolve) => setTimeout(resolve, 50));
+      tokenSocket.post(new noflo.IP("openBracket", "tokens"));
+      tokenSocket.post(new noflo.IP("data", "%name%"));
+      tokenSocket.post(new noflo.IP("data", "%other%"));
+      tokenSocket.post(new noflo.IP("closeBracket", "tokens"));
+      await new Promise((resolve) => setTimeout(resolve, 50));
+      const data = outIps.filter((ip) => ip.type === "data");
+      assert.equal(data.length, 1);
+      assert.equal(data[0].data, "Hello world and NoFlo");
     } finally {
       await c.shutdown();
     }

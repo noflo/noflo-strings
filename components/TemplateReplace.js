@@ -31,12 +31,16 @@ export function getComponent() {
         datatype: "string",
         description: "Template to fill in",
         control: true,
+        // Standing configuration: readable from scoped activations
+        scoped: false,
         required: true,
       },
       default: {
         datatype: "string",
         description: "Default value for non-string replacements",
         control: true,
+        // Standing configuration: readable from scoped activations
+        scoped: false,
       },
     },
     outPorts: {

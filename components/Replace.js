@@ -21,11 +21,15 @@ export function getComponent() {
         datatype: "string",
         description: "Pattern to replace",
         control: true,
+        // Standing configuration: readable from scoped activations
+        scoped: false,
       },
       replacement: {
         datatype: "string",
         description: "Replacement for the pattern",
         control: true,
+        // Standing configuration: readable from scoped activations
+        scoped: false,
         default: "",
       },
     },

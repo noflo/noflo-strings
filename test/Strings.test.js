@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import * as noflo from "@noflo/noflo";
 
+import { getComponent as getAppend } from "../components/Append.js";
 import { getComponent as getBase64 } from "../components/Base64Encode.js";
 import { getComponent as getCompile } from "../components/CompileString.js";
 import { getComponent as getSplice } from "../components/Splice.js";
@@ -226,6 +227,65 @@ describe("TemplateReplace component", () => {
       inSocket.post(new noflo.IP("data", "NoFlo"));
       const ip = await outIp;
       assert.equal(ip.data, "Hello world and NoFlo");
+    } finally {
+      await c.shutdown();
+    }
+  });
+});
+
+describe("Standing configuration under the gate model", () => {
+  it("gates a scoped data stream with an unscoped standing control value", async () => {
+    const c = getAppend();
+    const inSocket = noflo.internalSocket.createSocket();
+    const appendSocket = noflo.internalSocket.createSocket();
+    const outSocket = noflo.internalSocket.createSocket();
+    c.inPorts.in.attach(inSocket);
+    c.inPorts.append.attach(appendSocket);
+    c.outPorts.out.attach(outSocket);
+    const outIps = collect(outSocket);
+    try {
+      // The standing suffix arrives unscoped, before any data
+      appendSocket.post(new noflo.IP("data", "/_posts"));
+      // The data stream arrives scoped: two entries in different scopes,
+      // the way a bracketed directory listing scopes its entries
+      inSocket.post(new noflo.IP("data", "/site/baz", { scope: "/site" }));
+      inSocket.post(new noflo.IP("data", "/site/tango", { scope: "/site" }));
+      await new Promise((resolve) => setTimeout(resolve, 50));
+      const data = outIps.filter((ip) => ip.type === "data");
+      assert.equal(data.length, 2);
+      assert.equal(data[0].data, "/site/baz/_posts");
+      assert.equal(data[0].scope, "/site");
+      assert.equal(data[1].data, "/site/tango/_posts");
+    } finally {
+      await c.shutdown();
+    }
+  });
+
+  it("keeps the standing control value buffered across activations", async () => {
+    const c = getAppend();
+    const inSocket = noflo.internalSocket.createSocket();
+    const appendSocket = noflo.internalSocket.createSocket();
+    const outSocket = noflo.internalSocket.createSocket();
+    c.inPorts.in.attach(inSocket);
+    c.inPorts.append.attach(appendSocket);
+    c.outPorts.out.attach(outSocket);
+    const outIps = collect(outSocket);
+    try {
+      appendSocket.post(new noflo.IP("data", "-suffix"));
+      inSocket.post(new noflo.IP("data", "one"));
+      await new Promise((resolve) => setTimeout(resolve, 50));
+      inSocket.post(new noflo.IP("data", "two"));
+      await new Promise((resolve) => setTimeout(resolve, 50));
+      assert.equal(
+        outIps
+          .filter((ip) => ip.type === "data")
+          .map((ip) => ip.data)
+          .join(","),
+        "one-suffix,two-suffix",
+      );
+      // The control port is non-consuming: the standing value survives
+      // both activations in the buffer
+      assert.equal(c.inPorts.append.getBuffer(null).length, 1);
     } finally {
       await c.shutdown();
     }

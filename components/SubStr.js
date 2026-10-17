@@ -19,11 +19,15 @@ export function getComponent() {
         description: "Start index of the substring",
         default: 0,
         control: true,
+        // Standing configuration: readable from scoped activations
+        scoped: false,
       },
       limit: {
         datatype: "int",
         description: "Maximum length of the substring",
         control: true,
+        // Standing configuration: readable from scoped activations
+        scoped: false,
       },
     },
     outPorts: {

@@ -19,6 +19,8 @@ export function getComponent() {
         datatype: "string",
         description: "Delimiter to join the strings with",
         control: true,
+        // Standing configuration: readable from scoped activations
+        scoped: false,
         default: "\n",
       },
     },

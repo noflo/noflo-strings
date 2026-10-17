@@ -22,12 +22,16 @@ export function getComponent() {
         datatype: "string",
         description: "String to join array elements with",
         control: true,
+        // Standing configuration: readable from scoped activations
+        scoped: false,
         default: ":",
       },
       delim: {
         datatype: "string",
         description: "String to join the pairs with",
         control: true,
+        // Standing configuration: readable from scoped activations
+        scoped: false,
         default: ",",
       },
     },

@@ -4,8 +4,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## [Unreleased]
 
+### Changed
+
+- Every control port is declared `scoped: false`: the library's control ports are standing configuration (patterns, delimiters, templates, suffixes, encodings), and under the gate model (noflo 2.0.0-alpha.10, work document #47) an unscoped standing control value must stay readable from scoped activations. Previously an unscoped control IP on the default `scoped: true` control port warned and was unreadable at any scope holding scoped data — standing configuration arriving for a scoped stream silently failed.
+- Dependencies track the `2.0.0-alpha.10` monorepo packages.
+
+### Added
+
+- Spec coverage for the gate model: a scoped data stream gated by an unscoped standing control value processes every scoped message with the control value readable, and the control value survives successive activations non-consumed.
 ## [2.0.0-alpha.1] - 2026-10-08
 
 ### Changed

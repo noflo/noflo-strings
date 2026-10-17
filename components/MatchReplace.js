@@ -18,6 +18,8 @@ export function getComponent() {
         description:
           "Dictionary object with key matching the input object and value being the replacement item",
         control: true,
+        // Standing configuration: readable from scoped activations
+        scoped: false,
         required: true,
       },
     },

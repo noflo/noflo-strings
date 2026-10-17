@@ -18,6 +18,8 @@ export function getComponent() {
         description: "Base to parse the string in",
         default: 10,
         control: true,
+        // Standing configuration: readable from scoped activations
+        scoped: false,
       },
     },
     outPorts: {

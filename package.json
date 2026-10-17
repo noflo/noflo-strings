@@ -18,7 +18,7 @@
       "email": "ryanshaw@unc.edu"
     },
     {
-      "name": "Paul Mölders",
+      "name": "Paul M\u00f6lders",
       "email": "paulmoelders@gmail.com"
     }
   ],
@@ -28,7 +28,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@noflo/noflo": "^2.0.0-alpha.3"
+    "@noflo/noflo": "^2.0.0-alpha.10"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.0.0",

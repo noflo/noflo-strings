@@ -12,6 +12,8 @@ export function getComponent() {
         datatype: "string",
         description: "String to send",
         control: true,
+        // Standing configuration: readable from scoped activations
+        scoped: false,
         required: true,
       },
       in: {

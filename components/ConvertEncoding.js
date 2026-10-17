@@ -22,12 +22,16 @@ export function getComponent() {
         description: "Input encoding",
         default: "utf8",
         control: true,
+        // Standing configuration: readable from scoped activations
+        scoped: false,
       },
       to: {
         datatype: "string",
         description: "Output encoding",
         default: "base64",
         control: true,
+        // Standing configuration: readable from scoped activations
+        scoped: false,
       },
     },
     outPorts: {

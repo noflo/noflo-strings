@@ -18,6 +18,8 @@ export function getComponent() {
         datatype: "string",
         description: "String representation of a regexp used as filter",
         control: true,
+        // Standing configuration: readable from scoped activations
+        scoped: false,
         required: true,
       },
     },

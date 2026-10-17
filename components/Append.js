@@ -17,6 +17,8 @@ export function getComponent() {
         datatype: "string",
         description: "String to append",
         control: true,
+        // Standing configuration: readable from scoped activations
+        scoped: false,
         required: true,
       },
     },

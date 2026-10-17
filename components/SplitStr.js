@@ -22,6 +22,8 @@ export function getComponent() {
         datatype: "string",
         description: "Delimiter used to split",
         control: true,
+        // Standing configuration: readable from scoped activations
+        scoped: false,
         default: "\n",
       },
     },

@@ -18,11 +18,15 @@ export function getComponent() {
         datatype: "string",
         description: "Pass strings through without serializing (true/false)",
         control: true,
+        // Standing configuration: readable from scoped activations
+        scoped: false,
       },
       pretty: {
         datatype: "string",
         description: "Pretty-print with indentation (true/false)",
         control: true,
+        // Standing configuration: readable from scoped activations
+        scoped: false,
       },
     },
     outPorts: {

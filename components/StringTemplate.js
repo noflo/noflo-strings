@@ -149,6 +149,8 @@ export function getComponent() {
         datatype: "string",
         description: "ERB-style template to render",
         control: true,
+        // Standing configuration: readable from scoped activations
+        scoped: false,
         required: true,
       },
     },
